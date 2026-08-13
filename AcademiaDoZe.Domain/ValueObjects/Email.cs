@@ -17,10 +17,10 @@ public record Email
     {
         var partes = email.Split('@');
         if (partes.Length != 2) return false;
-        if (string.IsNullOrWhiteSpace(partes[0])) returnfalse; var dominio = partes[1];
-        if (string.IsNullOrWhiteSpace(dominio)) returnfalse; if (dominio.StartsWith('.') || dominio.EndsWith('.')) returnfalse; var labels = dominio.Split('.');
+        if (string.IsNullOrWhiteSpace(partes[0])) return false; var dominio = partes[1];
+        if (string.IsNullOrWhiteSpace(dominio)) return false; if (dominio.StartsWith('.') || dominio.EndsWith('.')) return false; var labels = dominio.Split('.');
         if (labels.Length < 2) return false;
-        if (labels.Any(l => string.IsNullOrWhiteSpace(l))) returnfalse; return true;
+        if (labels.Any(l => string.IsNullOrWhiteSpace(l))) return false; return true;
     }
     public override string ToString() => Valor;
 }

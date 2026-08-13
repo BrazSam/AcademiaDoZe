@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.ValueObjects
 {
@@ -14,20 +15,17 @@ namespace AcademiaDoZe.Domain.ValueObjects
         }
 
         // metodo de fabrica
-        public static Cpf Criar(string valor)
+        public static Result<Cpf> Criar(string valor)
         {
-            // validacoes e normalizacoes
             if (string.IsNullOrWhiteSpace(valor))
-                throw new Exception("CPF_OBRIGATORIO");
+                return Result<Cpf>.Failure("Cpf", "CPF_OBRIGATORIO");
 
-            // remove pontos, tracos e espacos
             string cpfLimpo = Regex.Replace(valor, @"[^\d]", "");
 
             if (!EValido(cpfLimpo))
-                throw new Exception("CPF_INVALIDO");
+                return Result<Cpf>.Failure("Cpf", "CPF_INVALIDO");
 
-            // criacao e retorno do objeto
-            return new Cpf(cpfLimpo);
+            return Result<Cpf>.Success(new Cpf(cpfLimpo));
         }
 
         // validacao simplificada dos digitos
