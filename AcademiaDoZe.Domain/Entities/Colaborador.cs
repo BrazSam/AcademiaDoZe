@@ -1,4 +1,4 @@
-﻿using AcademiaDoZe.Domain.Common;
+﻿using AcademiaDoZe.Domain.Common; //Samuel Braz dos Santos
 using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.Services;
 using AcademiaDoZe.Domain.ValueObjects;
