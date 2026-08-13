@@ -1,47 +1,31 @@
-﻿using AcademiaDoZe.Domain.Entities;
-using System; //Samuel Braz dos Santos
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using AcademiaDoZe.Domain.Common;
+using AcademiaDoZe.Domain.Entities;
+using AcademiaDoZe.Domain.Services;
+namespace AcademiaDoZe.Domain.ValueObjects;
 
-namespace AcademiaDoZe.Domain.ValueObjects
+public record Endereco
 {
-    public record Endereco
+    public Logradouro Logradouro { get; }
+    public string Numero { get; }
+    public string Complemento { get; }
+    private Endereco(Logradouro logradouro, string numero, string complemento)
     {
-        public Logradouro Logradouro { get; }
-        public string Numero { get; }
-        public string Complemento { get; }
-        private Endereco(Logradouro logradouro, string numero, string complemento)
-        {
-            Logradouro = logradouro;
-            Numero = numero;
-            Complemento = complemento;
-        }
-
-        // metodo de fabrica
-        public static Endereco Criar(string logradouro, string numero, string bairro, string cidade, string estado, Cep cep)
-        {
-            // validacoes e normalizacoes
-            if (string.IsNullOrWhiteSpace(logradouro))
-                throw new Exception("LOGRADOURO_OBRIGATORIO");
-
-            if (string.IsNullOrWhiteSpace(numero))
-                throw new Exception("NUMERO_OBRIGATORIO");
-
-            if (string.IsNullOrWhiteSpace(bairro))
-                throw new Exception("BAIRRO_OBRIGATORIO");
-
-            if (string.IsNullOrWhiteSpace(cidade))
-                throw new Exception("CIDADE_OBRIGATORIO");
-
-            if (string.IsNullOrWhiteSpace(estado))
-                throw new Exception("ESTADO_OBRIGATORIO");
-
-            if (cep == null)
-                throw new Exception("CEP_OBRIGATORIO");
-
-            // criacao e retorno do objeto
-            return new Endereco(logradouro.Trim(), numero.Trim(), bairro.Trim(), cidade.Trim(), estado.Trim().ToUpper(), cep);
-        }
+        Logradouro = logradouro;
+        Numero = numero;
+        Complemento = complemento;
+    }
+    public static Result<Endereco> Criar(Logradouro logradouro, string numero, string complemento)
+    {
+        var notifications = new List<Notification>();
+        if (logradouro == null)
+            notifications.Add(new Notification("Endereco", "LOGRADOURO_OBRIGATORIO"));
+        if (NormalizadoService.TextoVazioOuNulo(numero))
+            notifications.Add(new Notification("Numero", "NUMERO_OBRIGATORIO"));
+        else
+            numero = NormalizadoService.LimparEspacos(numero);
+        complemento = NormalizadoService.LimparEspacos(complemento);
+        if (notifications.Count != 0)
+            return Result<Endereco>.Failure(notifications);
+        return Result<Endereco>.Success(new Endereco(logradouro!, numero, complemento));
     }
 }

@@ -6,7 +6,7 @@ namespace AcademiaDoZe.Domain.Enums
 {
     public enum ColaboradorVinculo
     {
-        Clt = 1,
+        CLT = 1,
         Estagio = 2
     }
 }

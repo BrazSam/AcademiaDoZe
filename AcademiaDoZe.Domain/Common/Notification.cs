@@ -1,10 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace AcademiaDoZe.Domain.Common;
 
-namespace AcademiaDoZe.Domain.Common
-{
-    internal class Notification
-    {
-    }
-}
+public record Notification(string Propriedade, string Mensagem);

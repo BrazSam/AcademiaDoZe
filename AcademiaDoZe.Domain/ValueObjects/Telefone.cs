@@ -1,37 +1,18 @@
-﻿using System; //Samuel Braz dos Santos
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using AcademiaDoZe.Domain.Common;
+using AcademiaDoZe.Domain.Services;
+namespace AcademiaDoZe.Domain.ValueObjects;
 
-namespace AcademiaDoZe.Domain.ValueObjects
+public record Telefone
 {
-    public record Telefone
+    public string Valor { get; }
+    private Telefone(string valor)
     {
-        public string Valor { get; }
-        private Telefone(string valor)
-        {
-            Valor = valor;
-        }
-
-        // metodo de fabrica
-        public static Telefone Criar(string valor)
-        {
-            // validacoes e normalizacoes
-            if (string.IsNullOrWhiteSpace(valor))
-                throw new Exception("TELEFONE_OBRIGATORIO");
-
-            // remove parenteses, tracos e espacos
-            string telLimpo = Regex.Replace(valor, @"[^\d]", "");
-
-            // telefone deve ter 10 (fixo) ou 11 (celular com ddd) digitos
-            if (telLimpo.Length < 10 || telLimpo.Length > 11)
-                throw new Exception("TELEFONE_INVALIDO");
-
-            // criacao e retorno do objeto
-            return new Telefone(telLimpo);
-        }
-
-        //polimorfismo
-        public override string ToString() => Valor;
+        Valor = valor;
     }
+    public static Result<Telefone> Criar(string valor)
+    {
+        if (NormalizadoService.TextoVazioOuNulo(valor)) return Result<Telefone>.Failure("Telefone", "TELEFONE_OBRIGATORIO"); var textoLimpo = NormalizadoService.LimparEDigitos(valor); if (textoLimpo.Length != 11)
+            return Result<Telefone>.Failure("Telefone", "TELEFONE_DIGITOS"); return Result<Telefone>.Success(new Telefone(textoLimpo));
+    }
+    public override string ToString() => Valor;
 }
