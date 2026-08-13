@@ -1,28 +1,21 @@
-﻿using System; //Samuel Braz dos Santos
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using AcademiaDoZe.Domain.Common;
+namespace AcademiaDoZe.Domain.ValueObjects;
 
-namespace AcademiaDoZe.Domain.ValueObjects
+public record Arquivo
 {
-    public record Arquivo
+    public byte[] Conteudo { get; }
+    private Arquivo(byte[] conteudo)
     {
-        public byte[] Conteudo { get; }
-        private Arquivo(byte[] conteudo)
-        {
-            Conteudo = conteudo;
-        }
-
-
-        // metodo de fabrica
-        public static Arquivo Criar(byte[] bytes)
-        {
-            // validacoes e normalizacoes
-            if (bytes == null || bytes.Length == 0)
-                throw new Exception("ARQUIVO_OBRIGATORIO");
-
-            // criacao e retorno do objeto
-            return new Arquivo(bytes);
-        }
+        Conteudo = conteudo;
+    }
+    public static Result<Arquivo> Criar(byte[] conteudo)
+    {
+        if (conteudo == null)
+            return Result<Arquivo>.Failure("Arquivo", "ARQUIVO_OBRIGATORIO");
+        const int tamanhoMaximoBytes = 15 * 1024 * 1024; // 15MB
+        if (conteudo.Length > tamanhoMaximoBytes)
+            return Result<Arquivo>.Failure("Arquivo", "ARQUIVO_TIPO_TAMANHO");
+        // cria e retorna o objeto
+        return Result<Arquivo>.Success(new Arquivo(conteudo));
     }
 }
