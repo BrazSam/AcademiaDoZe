@@ -1,4 +1,4 @@
-﻿using AcademiaDoZe.Domain.Common;
+﻿using AcademiaDoZe.Domain.Common; //Samuel Braz dos Santos
 namespace AcademiaDoZe.Domain.ValueObjects;
 
 public record Arquivo

@@ -1,30 +1,17 @@
-﻿using System; //Samuel Braz dos Santos
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AcademiaDoZe.Domain.Common;
+﻿using AcademiaDoZe.Domain.Common; //Samuel Braz dos Santos
+using AcademiaDoZe.Domain.Services;
+namespace AcademiaDoZe.Domain.ValueObjects;
 
-namespace AcademiaDoZe.Domain.ValueObjects
+public record Senha
 {
-    public record Senha
+    public string Valor { get; }
+    private Senha(string valor)
     {
-        public string Valor { get; }
-        private Senha(string valor)
-        {
-            Valor = valor;
-        }
-
-        public static Result<Senha> Criar(string valor)
-        {
-            if (string.IsNullOrWhiteSpace(valor))
-                return Result<Senha>.Failure("Senha", "SENHA_OBRIGATORIO");
-
-            if (valor.Length < 6)
-                return Result<Senha>.Failure("Senha", "SENHA_INVALIDA");
-
-            return Result<Senha>.Success(new Senha(valor));
-        }
-
-        public override string ToString() => Valor;
+        Valor = valor;
     }
+    public static Result<Senha> Criar(string valor)
+    {
+        if (NormalizacaoService.TextoVazioOuNulo(valor)) return Result<Senha>.Failure("Senha", "SENHA_OBRIGATORIO"); var textoLimpo = NormalizacaoService.LimparEspacos(valor); if (textoLimpo.Length < 6 || !textoLimpo.Any(char.IsUpper)) return Result<Senha>.Failure("Senha", "SENHA_FORMATO"); return Result<Senha>.Success(new Senha(textoLimpo));
+    }
+    public override string ToString() => Valor;
 }

@@ -1,62 +1,55 @@
-﻿using System; //Samuel Braz dos Santos
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AcademiaDoZe.Domain.Common;
+﻿using AcademiaDoZe.Domain.Common; //Samuel Braz dos Santos
+using AcademiaDoZe.Domain.Services;
+namespace AcademiaDoZe.Domain.ValueObjects;
 
-namespace AcademiaDoZe.Domain.ValueObjects
+public record Cpf
 {
-    public record Cpf
+    public string Valor { get; }
+    private Cpf(string valor)
     {
-        public string Valor { get; }
-        private Cpf(string valor)
-        {
-            Valor = valor;
-        }
-
-        // metodo de fabrica
-        public static Result<Cpf> Criar(string valor)
-        {
-            if (string.IsNullOrWhiteSpace(valor))
-                return Result<Cpf>.Failure("Cpf", "CPF_OBRIGATORIO");
-
-            string cpfLimpo = Regex.Replace(valor, @"[^\d]", "");
-
-            if (!EValido(cpfLimpo))
-                return Result<Cpf>.Failure("Cpf", "CPF_INVALIDO");
-
-            return Result<Cpf>.Success(new Cpf(cpfLimpo));
-        }
-
-        // validacao simplificada dos digitos
-        private static bool EValido(string cpf)
-        {
-            // precisa ter 11 digitos
-            if (cpf.Length != 11) return false;
-
-            // rejeita cpfs com numeros todos iguais
-            if (cpf.Distinct().Count() == 1) return false;
-
-            // calculo do primeiro digito
-            int soma = 0;
-            for (int i = 0; i < 9; i++)
-                soma += (cpf[i] - '0') * (10 - i);
-
-            int resto = (soma * 10) % 11;
-            if (resto == 10 || resto == 11) resto = 0;
-            if (resto != (cpf[9] - '0')) return false;
-
-            // calculo do segundo digito
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-                soma += (cpf[i] - '0') * (11 - i);
-
-            resto = (soma * 10) % 11;
-            if (resto == 10 || resto == 11) resto = 0;
-            if (resto != (cpf[10] - '0')) return false;
-
-            return true;
-        }
-
+        Valor = valor;
+    }
+    public static Result<Cpf> Criar(string valor)
+    {
+        if (NormalizacaoService.TextoVazioOuNulo(valor))
+            return Result<Cpf>.Failure("Cpf", "CPF_OBRIGATORIO");
+        var textoLimpo = NormalizacaoService.LimparEDigitos(valor);
+        if (textoLimpo.Length != 11)
+            return Result<Cpf>.Failure("Cpf", "CPF_DIGITOS");
+        if (!Validar(textoLimpo))
+            return Result<Cpf>.Failure("Cpf", "CPF_INVALIDO");
+        return Result<Cpf>.Success(new Cpf(textoLimpo));
+    }
+    private static bool Validar(string cpf)
+    {
+        if (cpf.Length != 11) return false;
+        
+        string[] invalidos = ["00000000000", "11111111111", "22222222222", "33333333333", "44444444444", "55555555555", "66666666666", "77777777777", "88888888888", "99999999999"];
+        if (invalidos.Contains(cpf)) return false;
+        var tempCpf = cpf[..9];
+        var soma = 0;
+        int[] multiplicador1 = [10, 9, 8, 7, 6, 5, 4, 3, 2];
+        for (var i = 0; i < 9; i++)
+        soma += (tempCpf[i] - '0') * multiplicador1[i];
+        var resto = soma % 11;
+        if (resto < 2)
+        resto = 0;
+        else
+        resto = 11 - resto;
+        var digito = resto.ToString();
+        tempCpf += digito;
+        soma = 0;
+        int[] multiplicador2 = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
+        for (var i = 0; i < 10; i++)
+        soma += (tempCpf[i] - '0') * multiplicador2[i];
+        resto = soma % 11;
+        if (resto < 2)
+        resto = 0;
+        else
+        resto = 11 - resto;
+        digito += resto.ToString();
+        return cpf.EndsWith(digito);
+    
+   
     }
 }

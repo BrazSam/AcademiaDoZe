@@ -1,4 +1,4 @@
-﻿namespace AcademiaDoZe.Domain.Common;
+﻿namespace AcademiaDoZe.Domain.Common; //Samuel Braz dos Santos
 
 public class Result<T>
 {
