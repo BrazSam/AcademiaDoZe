@@ -3,4 +3,5 @@
     <Project Path="AcademiaDoZe.Domain.Tests/AcademiaDoZe.Domain.Tests.csproj" Id="68e0c7d9-613c-47eb-bc3d-7b8269845c6c" />
   </Folder>
   <Project Path="AcademiaDoZe.Domain/AcademiaDoZe.Domain.csproj" />
+  <Project Path="AcademiaDoZe.Infrastructure/AcademiaDoZe.Infrastructure.csproj" Id="5c5d42a5-c958-4a1c-8bce-c5e7004520e2" />
 </Solution>
