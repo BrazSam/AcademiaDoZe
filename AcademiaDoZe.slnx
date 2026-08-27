@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Testes/">
     <Project Path="AcademiaDoZe.Domain.Tests/AcademiaDoZe.Domain.Tests.csproj" Id="68e0c7d9-613c-47eb-bc3d-7b8269845c6c" />
+    <Project Path="AcademiaDoZe.Infrastructure.Tests/AcademiaDoZe.Infrastructure.Tests.csproj" Id="0aac41ce-5a87-418f-9cdd-28a41e116555" />
   </Folder>
   <Project Path="AcademiaDoZe.Domain/AcademiaDoZe.Domain.csproj" />
   <Project Path="AcademiaDoZe.Infrastructure/AcademiaDoZe.Infrastructure.csproj" Id="5c5d42a5-c958-4a1c-8bce-c5e7004520e2" />
