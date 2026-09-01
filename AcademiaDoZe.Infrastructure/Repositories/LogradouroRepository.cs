@@ -30,14 +30,14 @@ public async Task<Logradouro?> ObterPorId(int id, CancellationToken cancellation
             throw new InfrastructureException("ERRO_OBTER_POR_ID", $"Erro ao obter logradouro por ID {id}: {ex.Message}", ex);
         }
     }
-    public async Task<IEnumerable<Logradouro>> ObterTodos(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Logradouro>> ObterTodos(CancellationToken cancellationToken = default) //serve para obter todos os logradouros do banco de dados, ordenados pelo nome.
     {
         try
         {
             string query = $"{BaseSelectQuery} ORDER BY nome";
             await using var command = await CreateCommandAsync(query, cancellationToken);
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-            var entities = new List<Logradouro>();
+            var entities = new List<Logradouro>(); //convertendo o resultado do reader em uma lista de logradouros.
             while (await reader.ReadAsync(cancellationToken))
             {
                 entities.Add(Map(reader));
@@ -50,7 +50,8 @@ public async Task<Logradouro?> ObterPorId(int id, CancellationToken cancellation
         }
     }
 
-    public static Logradouro Map(DbDataReader reader, string nomeColumn = "nome")
+    public static Logradouro Map(DbDataReader reader, string nomeColumn = "nome") //Pega do banco de dados e transforma em um objeto do domínio, usando o método de fábrica Criar da entidade Logradouro.
+                                                                                  //Se houver algum erro de domínio, lança uma InfrastructureException com detalhes do erro.
     {
         try
         {
@@ -78,7 +79,7 @@ public async Task<Logradouro?> ObterPorId(int id, CancellationToken cancellation
 
     public async Task<Logradouro> Adicionar(Logradouro entity, CancellationToken cancellationToken = default)
     {
-        try
+        try //evitar injeção de SQL, usar parâmetros para evitar problemas de segurança e garantir que os dados sejam tratados corretamente.
         {
             string query = FormatInsertQuery("INSERT INTO tb_logradouro (cep, nome, bairro, cidade, estado, pais) VALUES (@Cep, @Nome, @Bairro, @Cidade, @Estado, @Pais)"); await using var command = await CreateCommandAsync(query, cancellationToken);
             command.AddParameter("@Cep", entity.Cep.Valor, DbType.String);

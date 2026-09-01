@@ -38,7 +38,7 @@ public class LogradouroInfrastructureTests : TestBase
     public async Task Logradouro_Adicionar_E_ObterPorId_Sucesso()
     {
         var cep = GerarCep();
-        var logradouro = Logradouro.Criar(0, cep, "Rua das Flores", "Centro", "Lages", "SC", "Brasil").Value!;
+        var logradouro = Logradouro.Criar(0, cep, "Rua das Flores", "Braz", "Lages", "SC", "Brasil").Value!;
         var inserido = await _repository.Adicionar(logradouro);
         Assert.NotNull(inserido);
         Assert.True(inserido.Id > 0);

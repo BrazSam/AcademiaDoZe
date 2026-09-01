@@ -1,7 +1,8 @@
 ﻿using System.Data.Common;
 namespace AcademiaDoZe.Infrastructure.Data;
 
-public static class DataReaderExtensions
+public static class DataReaderExtensions //Serve para facilitar a leitura de valores de colunas em um DbDataReader,
+                                         //fornecendo métodos de extensão para obter valores de forma mais segura e conveniente.
 {
     public static string GetStringValue(this DbDataReader reader, string columnName)
     {

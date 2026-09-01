@@ -14,12 +14,12 @@ public class ColaboradorRepository : BaseRepository, IColaboradorRepository
     {
     }
     private static string BaseSelectQuery => @"
-SELECT
-c.id_colaborador, c.cpf, c.nome, c.nascimento, c.telefone, c.email,
-c.logradouro_id, c.numero, c.complemento, c.senha, c.foto, c.admissao, c.tipo, c.vinculo,
-l.id_logradouro, l.cep, l.nome AS logradouro_nome, l.bairro, l.cidade, l.estado, l.pais
-FROM tb_colaborador c
-INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
+        SELECT
+        c.id_colaborador, c.cpf, c.nome, c.nascimento, c.telefone, c.email,
+        c.logradouro_id, c.numero, c.complemento, c.senha, c.foto, c.admissao, c.tipo, c.vinculo,
+        l.id_logradouro, l.cep, l.nome AS logradouro_nome, l.bairro, l.cidade, l.estado, l.pais
+        FROM tb_colaborador c
+        INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
     // métodos aqui
 
     public async Task<Colaborador?> ObterPorId(int id, CancellationToken cancellationToken = default)
@@ -56,6 +56,7 @@ INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
             throw new InfrastructureException("ERRO_OBTER_TODOS", $"Erro ao obter todos os colaboradores: {ex.Message}", ex);
         }
     }
+
 
     public static Colaborador Map(DbDataReader reader, string nomeColumn = "nome")
     {
@@ -104,6 +105,7 @@ INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
         }
     }
 
+
     public async Task<Colaborador> Adicionar(Colaborador entity, CancellationToken cancellationToken = default)
     {
         try
@@ -132,6 +134,7 @@ INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
             throw new InfrastructureException("ERRO_ADICIONAR_COLABORADOR", $"Erro ao adicionar colaborador: {ex.Message}", ex);
         }
     }
+
 
     public async Task<Colaborador> Atualizar(Colaborador entity, CancellationToken cancellationToken = default)
     {
@@ -166,6 +169,7 @@ INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
         }
     }
 
+
     public async Task<bool> Remover(int id, CancellationToken cancellationToken = default)
     {
         try
@@ -196,6 +200,7 @@ INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
             throw new InfrastructureException("ERRO_OBTER_POR_CPF", $"Erro ao obter colaborador por CPF {cpf.Valor}: {ex.Message}", ex);
         }
     }
+
 
     public async Task<Colaborador?> ObterPorEmail(Email email, CancellationToken cancellationToken = default)
     {
@@ -228,6 +233,7 @@ INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
             throw new InfrastructureException("ERRO_VERIFICAR_CPF", $"Erro ao verificar existência de CPF: {ex.Message}", ex);
         }
     }
+
 
     public async Task<bool> EmailJaExiste(Email email, int? id = null, CancellationToken cancellationToken = default)
     {
@@ -265,6 +271,7 @@ INNER JOIN tb_logradouro l ON c.logradouro_id = l.id_logradouro";
             throw new InfrastructureException("ERRO_OBTER_POR_TIPO", $"Erro ao obter colaboradores por tipo {tipo}: {ex.Message}", ex);
         }
     }
+
 
     public async Task<IEnumerable<Colaborador>> ObterPorVinculo(ColaboradorVinculo vinculo, CancellationToken cancellationToken = default)
     {

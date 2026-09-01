@@ -92,7 +92,7 @@ public static DbConnection CreateConnection(string connectionString, DatabaseTyp
             _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }
-    public static string FormatInsertQuery(string insertSql, DatabaseType dbType)
+    public static string FormatInsertQuery(string insertSql, DatabaseType dbType) // Adiciona a cláusula de retorno de ID conforme o SGDB
     {
         if (string.IsNullOrWhiteSpace(insertSql)) throw new InfrastructureException("SQL_INSERT_VAZIO", "Comando SQL de INSERT não pode ser vazio.");
         return dbType switch
@@ -103,7 +103,7 @@ public static DbConnection CreateConnection(string connectionString, DatabaseTyp
             _ => throw new InfrastructureException("SGDB_NAO_SUPORTADO", $"SGDB não suportado: {dbType}")
         };
     }
-    public static string GetCurrentDateFunction(DatabaseType dbType)
+    public static string GetCurrentDateFunction(DatabaseType dbType) // Retorna a função de data atual conforme o SGDB
     {
         return dbType switch
         {
