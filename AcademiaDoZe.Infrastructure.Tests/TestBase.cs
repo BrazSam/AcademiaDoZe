@@ -32,4 +32,12 @@ public abstract class TestBase
 
     protected static string GerarTelefone() => (49990000000L + ((DateTime.UtcNow.Ticks % 8000000000L)) + Interlocked.Increment(ref _counter)).ToString("D11")[..11];
     #endregion
+
+    protected string ObterSiglaSgbd() => DatabaseType switch
+    {
+        DatabaseType.Sqlite => "SQLite",
+        DatabaseType.SqlServer => "SQLServer",
+        DatabaseType.MySql => "MySQL",
+        _ => throw new ArgumentOutOfRangeException()
+    };
 }
