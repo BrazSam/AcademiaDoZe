@@ -81,11 +81,12 @@ public class AlunoInfrastructureTests : TestBase
     [Fact]
     public async Task Aluno_Atualizar_Sucesso()
     {
+        var logradouro = await LogradouroInfrastructureTests.CriarEInserirLogradouroAsync(_logradouroRepo);
         var aluno = await CriarEInserirAlunoAsync(_alunoRepo, _logradouroRepo, NomeTeste, SobrenomeTeste, SenhaSgbd());
         var novoNome = "Israel Editado";
         var atualizado = await _alunoRepo.Atualizar(Aluno.Criar(
             aluno.Id, novoNome, aluno.Cpf.Valor, aluno.DataNascimento, aluno.Telefone.Valor,
-            aluno.Email.Valor, aluno.Endereco, "200", SobrenomeTeste, SenhaSgbd(), aluno.Foto).Value!);
+            aluno.Email.Valor, logradouro, "200", SobrenomeTeste, SenhaSgbd(), aluno.Foto).Value!);
         Assert.Equal(novoNome, atualizado.Nome);
         var noBanco = await _alunoRepo.ObterPorId(aluno.Id);
         Assert.Equal(novoNome, noBanco!.Nome);
