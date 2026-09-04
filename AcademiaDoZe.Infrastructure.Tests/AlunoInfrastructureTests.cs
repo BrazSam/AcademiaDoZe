@@ -83,7 +83,7 @@ public class AlunoInfrastructureTests : TestBase
     {
         var logradouro = await LogradouroInfrastructureTests.CriarEInserirLogradouroAsync(_logradouroRepo);
         var aluno = await CriarEInserirAlunoAsync(_alunoRepo, _logradouroRepo, NomeTeste, SobrenomeTeste, SenhaSgbd());
-        var novoNome = "Israel Editado";
+        var novoNome = "Samuel Editado";
         var atualizado = await _alunoRepo.Atualizar(Aluno.Criar(
             aluno.Id, novoNome, aluno.Cpf.Valor, aluno.DataNascimento, aluno.Telefone.Valor,
             aluno.Email.Valor, logradouro, "200", SobrenomeTeste, SenhaSgbd(), aluno.Foto).Value!);

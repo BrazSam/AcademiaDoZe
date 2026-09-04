@@ -5,7 +5,7 @@ namespace AcademiaDoZe.Infrastructure.Tests;
 public abstract class TestBase
 {
     // Alterne o SGBD alvo dos testes trocando apenas a constante abaixo:
-    private const DatabaseType SelectedDatabaseType = DatabaseType.Sqlite;
+    private const DatabaseType SelectedDatabaseType = DatabaseType.SqlServer;
     protected string ConnectionString { get; }
     protected DatabaseType DatabaseType { get; }
     protected TestBase()
