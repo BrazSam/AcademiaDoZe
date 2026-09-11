@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.Common;
 namespace AcademiaDoZe.Infrastructure.Repositories;
 
-public class LogradouroRepository : BaseRepository, ILogradouroRepository
+public class    LogradouroRepository : BaseRepository, ILogradouroRepository
 {
     public LogradouroRepository(string connectionString, DatabaseType databaseType) : base(connectionString, databaseType)
     {
