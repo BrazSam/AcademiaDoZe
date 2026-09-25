@@ -4,7 +4,7 @@ using AcademiaDoZe.Domain.Repositories;
 using AcademiaDoZe.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 namespace AcademiaDoZe.Application.DependencyInjection;
-
+//Samuel Braz dos Santos
 public static class ApplicationDependencyInjection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
