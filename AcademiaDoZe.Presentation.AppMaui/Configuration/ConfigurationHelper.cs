@@ -8,7 +8,7 @@ public static class ConfigurationHelper
     public static void ConfigureServices(IServiceCollection services)
     {
         // 1. Tipo de banco de dados: SqlServer, MySql ou Sqlite
-        var databaseType = AppDatabaseType.Sqlite;
+        var databaseType = AppDatabaseType.SqlServer;
         // 2. Configuração da Connection String de acordo com o banco escolhido
         string connectionString;
         if (databaseType == AppDatabaseType.Sqlite)
@@ -20,10 +20,10 @@ public static class ConfigurationHelper
         }
         else
         {
-            const string dbServer = "10.30.21.16";
+            const string dbServer = "localhost,1433";
             const string dbDatabase = "db_academia_do_ze";
-            const string dbUser = "root";
-            const string dbPassword = "abcBolinhas12345";
+            const string dbUser = "sa";
+            const string dbPassword = "#Bananadepijama123";
             // ajuste do complemento de acordo com o tipo de banco de dados escolhido
             string dbComplemento = string.Empty;
             if (databaseType == AppDatabaseType.SqlServer)
