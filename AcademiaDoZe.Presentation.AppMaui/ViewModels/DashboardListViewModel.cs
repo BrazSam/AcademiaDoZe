@@ -45,7 +45,7 @@ public partial class DashboardListViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             var logradourosTask = _logradouroService.ObterTodosAsync(cts.Token);
             var alunosTask = _alunoService.ObterTodosAsync(cts.Token);
             var colaboradoresTask = _colaboradorService.ObterTodosAsync(cts.Token);
