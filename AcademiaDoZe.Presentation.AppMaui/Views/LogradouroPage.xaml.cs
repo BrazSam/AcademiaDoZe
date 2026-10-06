@@ -10,6 +10,10 @@ public partial class LogradouroPage : ContentPage
     }
     protected override async void OnAppearing()
     {
-        /* implementar depois */
+        base.OnAppearing();
+        if (BindingContext is LogradouroViewModel viewModel)
+        {
+            await viewModel.InitializeAsync();
+        }
     }
 }
