@@ -80,7 +80,7 @@ public partial class LogradouroListViewModel : BaseViewModel
                 Logradouros.Clear();
             });
             IEnumerable<LogradouroDto> resultados = [];
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             // Busca os logradouros de acordo com o filtro
             if (string.IsNullOrWhiteSpace(SearchText))
             {
@@ -151,7 +151,7 @@ public partial class LogradouroListViewModel : BaseViewModel
                 Logradouros.Clear();
                 OnPropertyChanged(nameof(Logradouros));
             });
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             var logradourosList = await _logradouroService.ObterTodosAsync(cts.Token);
             if (logradourosList != null)
             {
@@ -195,7 +195,7 @@ public partial class LogradouroListViewModel : BaseViewModel
         try
         {
             IsBusy = true;
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             bool success = await _logradouroService.RemoverAsync(logradouro.Id, cts.Token);
             if (success)
             {

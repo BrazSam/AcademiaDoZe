@@ -28,7 +28,7 @@ public static class ConfigurationHelper
             string dbComplemento = string.Empty;
             if (databaseType == AppDatabaseType.SqlServer)
             {
-                dbComplemento = "TrustServerCertificate=True;Encrypt=True;Connect Timeout=5;Connection Timeout=5;";
+                dbComplemento = "TrustServerCertificate=True;Encrypt=True;Connect Timeout=15;Connection Timeout=15;";
             }
             else if (databaseType == AppDatabaseType.MySql)
             {
