@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+ xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ConfigPage"
+ Title="Configurações">
+    
+    <ScrollView>
+        <StackLayout Spacing="20">
+            
+            <!-- Tema -->
+            <Border Style="{StaticResource CardBorder}" Margin="15,10">
+                <StackLayout Spacing="15">
+                    <Label Text="Tema" Style="{StaticResource SubHeadline}"/>
+
+                    <StackLayout Spacing="5">
+                        <Label Text="Tema" />
+                        <Picker x:Name="TemaPicker">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>light</x:String>
+                                    <x:String>dark</x:String>
+                                    <x:String>system</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </StackLayout>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0" Text="Cancelar" Clicked="OnCancelarClicked" Style="{StaticResource ButtonSecondary}" HeightRequest="45"/>
+                        <Button Grid.Column="1" Text="Salvar Tema" Clicked="OnSalvarTemaClicked" Style="{StaticResource ButtonPrimary}" HeightRequest="45"/>
+                    </Grid>
+
+                </StackLayout>
+            </Border>
+            
+            
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

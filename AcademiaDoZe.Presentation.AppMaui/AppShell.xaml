@@ -18,8 +18,15 @@
     <FlyoutItem Title="Logradouros">
         <ShellContent ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
     </FlyoutItem>
+
+    <FlyoutItem Title="Configurações">
+        <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
+    </FlyoutItem>
     <!--
- <TabBar>
- <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" /> <ShellContent Title="Logradouros" ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" /> </TabBar>
- -->
+         <TabBar>
+         <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" />
+         <ShellContent Title="Logradouros" ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
+         <ShellContent Title="Configurações" ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
+         </TabBar>
+     -->
 </Shell>

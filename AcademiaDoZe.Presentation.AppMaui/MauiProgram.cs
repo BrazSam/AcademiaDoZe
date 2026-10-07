@@ -29,6 +29,7 @@ public static class MauiProgram
         builder.Services.AddTransient<DashboardListPage>();
         builder.Services.AddTransient<LogradouroListPage>();
         builder.Services.AddTransient<LogradouroPage>();
+        builder.Services.AddTransient<ConfigPage>(); // Adicione a página de configuração
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
