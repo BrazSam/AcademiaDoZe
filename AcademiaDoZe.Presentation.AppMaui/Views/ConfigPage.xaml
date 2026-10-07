@@ -31,8 +31,62 @@
 
                 </StackLayout>
             </Border>
-            
-            
+
+            <!-- Credenciais do Banco -->
+            <Border Style="{StaticResource CardBorder}" Margin="15,10">
+                <StackLayout Spacing="15">
+                    <Label Text="Credenciais do Banco" Style="{StaticResource SubHeadline}"/>
+                    <Grid ColumnDefinitions="*" ColumnSpacing="10">
+                        <StackLayout Spacing="5" Grid.Column="0">
+                            <Label Text="Tipo de Gerenciador"/>
+                            <Picker x:Name="DatabaseTypePicker" SelectedIndexChanged="OnDatabaseTypeChanged"/>
+                        </StackLayout>
+                    </Grid>
+                    <!-- Mensagem informativa para SQLite -->
+                    <Border x:Name="SqliteInfoCard" IsVisible="False" BackgroundColor="{AppThemeBinding Light=#F0F7FF, Dark=#1A2633}" StrokeShape="RoundRectangle 8" Padding="12">
+                        <Label Text=" O SQLite é um banco de dados local armazenado em arquivo. Não requer servidor de rede, usuário ou senha."
+                     FontSize="13"
+                     TextColor="{AppThemeBinding Light=#0056B3, Dark=#66B2FF}"/>
+                    </Border>
+                    <!-- Campo específico para SQLite (Caminho do arquivo .db) -->
+                    <StackLayout x:Name="SqliteContainer" Spacing="5" IsVisible="False">
+                        <Label Text="Caminho / Arquivo do Banco (.db)"/>
+                        <Entry x:Name="SqliteCaminhoEntry" Placeholder="Ex: C:\DEV\AcademiaDoZe\db_academia_do_ze.db"/>
+                    </StackLayout>
+                    <!-- Configurações de Servidor e Banco (SQL Server e MySQL) -->
+                    <Grid x:Name="ServidorBancoGrid" ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <StackLayout Spacing="5" Grid.Column="0">
+                            <Label Text="Servidor"/>
+                            <Entry x:Name="ServidorEntry" Placeholder="Digite o servidor..."/>
+                        </StackLayout>
+                        <StackLayout Spacing="5" Grid.Column="1">
+                            <Label Text="Banco"/>
+                            <Entry x:Name="BancoEntry" Placeholder="Digite o nome do banco..."/>
+                        </StackLayout>
+                    </Grid>
+                    <!-- Credenciais de Acesso (SQL Server e MySQL) -->
+                    <Grid x:Name="CredenciaisGrid" ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <StackLayout Spacing="5" Grid.Column="0">
+                            <Label Text="Usuário"/>
+                            <Entry x:Name="UsuarioEntry" Placeholder="Digite o usuário..."/>
+                        </StackLayout>
+                        <StackLayout Spacing="5" Grid.Column="1">
+                            <Label Text="Senha"/>
+                            <Entry x:Name="SenhaEntry" Placeholder="Digite a senha..." IsPassword="True"/>
+                        </StackLayout>
+                    </Grid>
+                    <!-- Complemento / Parâmetros adicionais da connection string -->
+                    <StackLayout Spacing="5">
+                        <Label x:Name="ComplementoLabel" Text="Complemento"/>
+                        <Entry x:Name="ComplementoEntry" Placeholder="Digite o complemento..."/>
+                    </StackLayout>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,10">
+                        <Button Grid.Column="0" Text="Cancelar" Clicked="OnCancelarClicked" Style="{StaticResource ButtonSecondary}" HeightRequest="45"/>
+                        <Button Grid.Column="1" Text="Salvar BD" Clicked="OnSalvarBdClicked" Style="{StaticResource ButtonPrimary}" HeightRequest="45"/>
+                    </Grid>
+                </StackLayout>
+            </Border>
+
         </StackLayout>
     </ScrollView>
 </ContentPage>
