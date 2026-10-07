@@ -13,20 +13,22 @@
  Route="MainPage" />
  -->
     <FlyoutItem Title="Dashboard">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe24b;" Color="{AppThemeBinding Light=Black, Dark=White}" />
+        </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" />
     </FlyoutItem>
     <FlyoutItem Title="Logradouros">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe0c8;" Color="{AppThemeBinding Light=Black, Dark=White}" />
+        </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
     </FlyoutItem>
 
     <FlyoutItem Title="Configurações">
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b8;" Color="{AppThemeBinding Light=Black, Dark=White}" />
+        </FlyoutItem.Icon>
         <ShellContent ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
     </FlyoutItem>
-    <!--
-         <TabBar>
-         <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate views:DashboardListPage}" Route="dashboard" />
-         <ShellContent Title="Logradouros" ContentTemplate="{DataTemplate views:LogradouroListPage}" Route="logradouros" />
-         <ShellContent Title="Configurações" ContentTemplate="{DataTemplate views:ConfigPage}" Route="configuracoes"/>
-         </TabBar>
-     -->
 </Shell>

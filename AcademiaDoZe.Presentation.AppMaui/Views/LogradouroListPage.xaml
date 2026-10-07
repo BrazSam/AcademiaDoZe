@@ -15,7 +15,11 @@
                 <!-- Entry de busca -->
                 <Entry Grid.Column="2" Text="{Binding SearchText}" Placeholder="Digite o valor..." HeightRequest="40" VerticalOptions="Center" Margin="0,0,0,0"/>
                 <!-- Botão de busca -->
-                <Button Grid.Column="4" Text="Buscar" Style="{StaticResource ButtonPrimary}" FontSize="14" WidthRequest="80" HeightRequest="40" Margin="0,0,0,0" Command="{Binding SearchLogradourosCommand}"/>
+                <Button Grid.Column="4" Text="Buscar" Style="{StaticResource ButtonPrimary}" FontSize="14" WidthRequest="120" HeightRequest="40" Margin="0,0,0,0" Command="{Binding SearchLogradourosCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
+                    </Button.ImageSource>
+                </Button>
             </Grid>
         </Border>
         <!-- Lista de Logradouros com FAB - "Floating Action Button" - Botão de Ação Flutuante -->
