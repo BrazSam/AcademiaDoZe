@@ -2,7 +2,7 @@
 using AcademiaDoZe.Domain.ValueObjects;
 namespace AcademiaDoZe.Domain.Repositories;
 
-public interface IAlunoRepository : IRepository<Aluno>
+public interface IAlunoRepository : IRepository<Aluno>, IDisposable
 {
     // Métodos específicos do domínio
     Task<Aluno?> ObterPorCpf(Cpf cpf, CancellationToken cancellationToken = default);

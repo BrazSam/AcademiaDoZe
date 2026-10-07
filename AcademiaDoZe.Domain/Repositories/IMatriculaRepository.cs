@@ -2,7 +2,7 @@
 using AcademiaDoZe.Domain.Enums;
 namespace AcademiaDoZe.Domain.Repositories;
 
-public interface IMatriculaRepository : IRepository<Matricula>
+public interface IMatriculaRepository : IRepository<Matricula>, IDisposable
 {
     // Métodos específicos do domínio
     Task<IEnumerable<Matricula>> ObterPorAluno(int alunoId, CancellationToken cancellationToken = default); 

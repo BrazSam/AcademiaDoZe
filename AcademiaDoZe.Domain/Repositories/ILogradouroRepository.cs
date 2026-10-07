@@ -2,7 +2,7 @@
 using AcademiaDoZe.Domain.ValueObjects;
 namespace AcademiaDoZe.Domain.Repositories;
 
-public interface ILogradouroRepository : IRepository<Logradouro>
+public interface ILogradouroRepository : IRepository<Logradouro>, IDisposable
 {
     // Métodos específicos do domínio
     Task<Logradouro?> ObterPorCep(Cep cep, CancellationToken cancellationToken = default);

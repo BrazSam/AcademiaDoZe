@@ -3,7 +3,7 @@ using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.ValueObjects;
 namespace AcademiaDoZe.Domain.Repositories;
 
-public interface IColaboradorRepository : IRepository<Colaborador>
+public interface IColaboradorRepository : IRepository<Colaborador>, IDisposable
 {
     // Métodos específicos do domínio
     Task<Colaborador?> ObterPorCpf(Cpf cpf, CancellationToken cancellationToken = default);

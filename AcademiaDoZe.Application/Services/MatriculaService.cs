@@ -14,86 +14,98 @@ public class MatriculaService : IMatriculaService
         _matriculaRepoFactory = matriculaRepoFactory ?? throw new ArgumentNullException(nameof(matriculaRepoFactory));
         _alunoRepoFactory = alunoRepoFactory ?? throw new ArgumentNullException(nameof(alunoRepoFactory));
     }
-    // MÉTODOS AQUI
 
     public async Task<MatriculaDto?> ObterPorIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        var matricula = await _matriculaRepoFactory().ObterPorId(id, cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        using var alunoRepo = _alunoRepoFactory();
+        var matricula = await matriculaRepo.ObterPorId(id, cancellationToken);
         if (matricula == null) return null;
-        var aluno = await _alunoRepoFactory().ObterPorId(matricula.AlunoId, cancellationToken)
+        var aluno = await alunoRepo.ObterPorId(matricula.AlunoId, cancellationToken)
         ?? throw new InvalidOperationException($"Aluno associado à matrícula {matricula.Id} não encontrado.");
         return matricula.ToDto(aluno.ToDto());
     }
     public async Task<IEnumerable<MatriculaDto>> ObterTodasAsync(CancellationToken cancellationToken = default)
     {
-        var matriculas = await _matriculaRepoFactory().ObterTodos(cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matriculas = await matriculaRepo.ObterTodos(cancellationToken);
         return await EnriquecerComAlunosAsync(matriculas, cancellationToken);
     }
     public async Task<IEnumerable<MatriculaDto>> ObterPorAlunoIdAsync(int alunoId, CancellationToken cancellationToken = default)
     {
-        var aluno = await _alunoRepoFactory().ObterPorId(alunoId, cancellationToken)
+        using var alunoRepo = _alunoRepoFactory();
+        var aluno = await alunoRepo.ObterPorId(alunoId, cancellationToken)
         ?? throw new InvalidOperationException($"Aluno com ID {alunoId} não encontrado.");
         var alunoDto = aluno.ToDto();
-        var matriculas = await _matriculaRepoFactory().ObterPorAluno(alunoId, cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matriculas = await matriculaRepo.ObterPorAluno(alunoId, cancellationToken);
         return [.. matriculas.Select(m => m.ToDto(alunoDto))];
     }
     public async Task<MatriculaDto?> ObterMatriculaAtivaPorAlunoAsync(int alunoId, CancellationToken cancellationToken = default)
     {
-        var matricula = await _matriculaRepoFactory().ObterMatriculaAtivaPorAluno(alunoId, cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matricula = await matriculaRepo.ObterMatriculaAtivaPorAluno(alunoId, cancellationToken);
         if (matricula == null) return null;
-        var aluno = await _alunoRepoFactory().ObterPorId(alunoId, cancellationToken)
+        using var alunoRepo = _alunoRepoFactory();
+        var aluno = await alunoRepo.ObterPorId(alunoId, cancellationToken)
         ?? throw new InvalidOperationException($"Aluno com ID {alunoId} não encontrado.");
         return matricula.ToDto(aluno.ToDto());
     }
     public async Task<bool> PossuiMatriculaAtivaAsync(int alunoId, CancellationToken cancellationToken = default)
     {
-        return await _matriculaRepoFactory().PossuiMatriculaAtiva(alunoId, cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        return await matriculaRepo.PossuiMatriculaAtiva(alunoId, cancellationToken);
     }
     public async Task<IEnumerable<MatriculaDto>> ObterAtivasAsync(int alunoId = 0, CancellationToken cancellationToken = default)
     {
-        var matriculas = await _matriculaRepoFactory().ObterAtivas(alunoId, cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matriculas = await matriculaRepo.ObterAtivas(alunoId, cancellationToken);
         return await EnriquecerComAlunosAsync(matriculas, cancellationToken);
     }
     public async Task<IEnumerable<MatriculaDto>> ObterVencendoEmDiasAsync(int dias, CancellationToken cancellationToken = default)
     {
-        var matriculas = await _matriculaRepoFactory().ObterVencendoEmDias(dias, cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matriculas = await matriculaRepo.ObterVencendoEmDias(dias, cancellationToken);
         return await EnriquecerComAlunosAsync(matriculas, cancellationToken);
     }
 
     public async Task<bool> RemoverAsync(int id, CancellationToken cancellationToken = default)
     {
-        var matricula = await _matriculaRepoFactory().ObterPorId(id, cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matricula = await matriculaRepo.ObterPorId(id, cancellationToken);
         if (matricula == null)
             return false;
-        return await _matriculaRepoFactory().Remover(id, cancellationToken);
+        return await matriculaRepo.Remover(id, cancellationToken);
     }
     public async Task<IEnumerable<MatriculaDto>> ObterPorPlanoAsync(AppMatriculaPlano plano, CancellationToken cancellationToken = default)
     {
-        var matriculas = await _matriculaRepoFactory().ObterPorPlano(plano.ToDomain(), cancellationToken);
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matriculas = await matriculaRepo.ObterPorPlano(plano.ToDomain(), cancellationToken);
         return await EnriquecerComAlunosAsync(matriculas, cancellationToken);
     }
     private async Task<IEnumerable<MatriculaDto>> EnriquecerComAlunosAsync(IEnumerable<Domain.Entities.Matricula> matriculas, CancellationToken cancellationToken)
     {
+        using var alunoRepo = _alunoRepoFactory();
         var matriculasList = matriculas.ToList();
         if (matriculasList.Count == 0) return [];
         var alunoIds = matriculasList.Select(m => m.AlunoId).Distinct().ToList();
         var alunosDict = new Dictionary<int, AlunoDto>();
         foreach (var id in alunoIds)
         {
-            var aluno = await _alunoRepoFactory().ObterPorId(id, cancellationToken);
+            var aluno = await alunoRepo.ObterPorId(id, cancellationToken);
             if (aluno != null)
             {
                 alunosDict[id] = aluno.ToDto();
             }
         }
         return [.. matriculasList.Select(m =>
-         {
-         if (!alunosDict.TryGetValue(m.AlunoId, out var alunoDto))
-         {
-         throw new InvalidOperationException($"Aluno associado à matrícula {m.Id} não encontrado.");
-         }
-         return m.ToDto(alunoDto);
-         })];
+        {
+            if (!alunosDict.TryGetValue(m.AlunoId, out var alunoDto))
+            {
+                throw new InvalidOperationException($"Aluno associado à matrícula {m.Id} não encontrado.");
+            }
+            return m.ToDto(alunoDto);
+        })];
     }
 
     public async Task<MatriculaDto> AdicionarAsync(MatriculaDto matriculaDto, CancellationToken cancellationToken = default)
@@ -101,9 +113,11 @@ public class MatriculaService : IMatriculaService
         ArgumentNullException.ThrowIfNull(matriculaDto);
         if (matriculaDto.AlunoMatricula == null || matriculaDto.AlunoMatricula.Id <= 0)
             throw new InvalidOperationException("Aluno não informado ou com ID inválido para matrícula.");
-        var aluno = await _alunoRepoFactory().ObterPorId(matriculaDto.AlunoMatricula.Id, cancellationToken)
+        using var alunoRepo = _alunoRepoFactory();
+        var aluno = await alunoRepo.ObterPorId(matriculaDto.AlunoMatricula.Id, cancellationToken)
         ?? throw new InvalidOperationException($"Aluno com ID {matriculaDto.AlunoMatricula.Id} não encontrado.");
-        if (await _matriculaRepoFactory().PossuiMatriculaAtiva(aluno.Id, cancellationToken))
+        using var matriculaRepo = _matriculaRepoFactory();
+        if (await matriculaRepo.PossuiMatriculaAtiva(aluno.Id, cancellationToken))
             throw new InvalidOperationException("Já existe uma matrícula ativa para este aluno.");
         bool menorDe16 = aluno.DataNascimento > DateOnly.FromDateTime(DateTime.Today.AddYears(-16));
         bool possuiLaudo = matriculaDto.LaudoMedico?.Conteudo != null && matriculaDto.LaudoMedico.Conteudo.Length > 0;
@@ -116,16 +130,18 @@ public class MatriculaService : IMatriculaService
             throw new InvalidOperationException("Alunos com restrições de saúde registradas devem apresentar um parecer médico autorizando a realização de atividades físicas.");
         }
         var matricula = matriculaDto.ToEntity(aluno);
-        var adicionada = await _matriculaRepoFactory().Adicionar(matricula, cancellationToken);
+        var adicionada = await matriculaRepo.Adicionar(matricula, cancellationToken);
         return adicionada.ToDto(aluno.ToDto());
     }
 
     public async Task<MatriculaDto> AtualizarAsync(MatriculaDto matriculaDto, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(matriculaDto);
-        var matriculaExistente = await _matriculaRepoFactory().ObterPorId(matriculaDto.Id, cancellationToken)
+        using var matriculaRepo = _matriculaRepoFactory();
+        var matriculaExistente = await matriculaRepo.ObterPorId(matriculaDto.Id, cancellationToken)
         ?? throw new KeyNotFoundException($"Matrícula com ID {matriculaDto.Id} não encontrada.");
-        var aluno = await _alunoRepoFactory().ObterPorId(matriculaExistente.AlunoId, cancellationToken)
+        using var alunoRepo = _alunoRepoFactory();
+        var aluno = await alunoRepo.ObterPorId(matriculaExistente.AlunoId, cancellationToken)
         ?? throw new InvalidOperationException($"Aluno associado à matrícula {matriculaDto.Id} não encontrado.");
         bool menorDe16 = aluno.DataNascimento > DateOnly.FromDateTime(DateTime.Today.AddYears(-16));
         bool possuiLaudo = (matriculaDto.LaudoMedico?.Conteudo != null && matriculaDto.LaudoMedico.Conteudo.Length > 0)
@@ -142,7 +158,7 @@ public class MatriculaService : IMatriculaService
             throw new InvalidOperationException("Alunos com restrições de saúde registradas devem apresentar um parecer médico autorizando a realização de atividades físicas.");
         }
         var matriculaAtualizada = matriculaExistente.UpdateFromDto(matriculaDto, aluno);
-        var atualizada = await _matriculaRepoFactory().Atualizar(matriculaAtualizada, cancellationToken);
+        var atualizada = await matriculaRepo.Atualizar(matriculaAtualizada, cancellationToken);
         return atualizada.ToDto(aluno.ToDto());
     }
 }
