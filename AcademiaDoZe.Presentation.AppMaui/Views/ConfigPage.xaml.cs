@@ -74,15 +74,15 @@ public partial class ConfigPage : ContentPage
                 SqliteContainer.IsVisible = false;
                 ServidorBancoGrid.IsVisible = true;
                 CredenciaisGrid.IsVisible = true;
-                ServidorEntry.Placeholder = "Ex: 172.24.32.1 ou localhost";
+                ServidorEntry.Placeholder = "Ex:localhost,1433";
                 BancoEntry.Placeholder = "Ex: db_academia_do_ze";
                 UsuarioEntry.Placeholder = "Ex: sa";
                 ComplementoLabel.Text = "Complemento (SSL / Timeout / Criptografia)";
                 ComplementoEntry.Placeholder = "TrustServerCertificate=True;Encrypt=True;Connect Timeout=5;Connection Timeout=5;";
-                ServidorEntry.Text = Preferences.Get("SqlServer_Servidor", Preferences.Get("Servidor", "172.24.32.1"));
+                ServidorEntry.Text = Preferences.Get("SqlServer_Servidor", Preferences.Get("Servidor", "localhost,1433"));
                 BancoEntry.Text = Preferences.Get("SqlServer_Banco", Preferences.Get("Banco", "db_academia_do_ze"));
                 UsuarioEntry.Text = Preferences.Get("SqlServer_Usuario", Preferences.Get("Usuario", "sa"));
-                SenhaEntry.Text = Preferences.Get("SqlServer_Senha", Preferences.Get("Senha", "abcBolinhas12345"));
+                SenhaEntry.Text = Preferences.Get("SqlServer_Senha", Preferences.Get("Senha", "#Bananadepijama123"));
                 ComplementoEntry.Text = Preferences.Get("SqlServer_Complemento", Preferences.Get("Complemento", "TrustServerCertificate=True;Encrypt=True;Connect Timeout=5;Connection Timeout=5;"));
                 break;
             case AppDatabaseType.MySql:
