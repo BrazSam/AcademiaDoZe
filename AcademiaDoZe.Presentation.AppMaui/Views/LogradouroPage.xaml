@@ -59,7 +59,7 @@
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,10">
                 <Button Grid.Column="0" Text="Cancelar" Command="{Binding CancelCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="50">
                     <Button.ImageSource>
-                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe5c9;" />
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe5c9;" Color="{AppThemeBinding Light=Black, Dark=White}"/>
                     </Button.ImageSource>
                 </Button>
 

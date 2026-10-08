@@ -53,8 +53,8 @@
                                         </Label>
                                         <Label Grid.Row="4" Grid.Column="0" Text="{Binding Pais}" Margin="0,0,0,5"/>
                                         <!-- Botões de Ação -->
-                                        <Button Grid.Row="0" Grid.Column="1" Text="Editar" Style="{StaticResource ButtonSmall}" Margin="4,0" Clicked="OnEditButtonClicked" />
-                                        <Button Grid.Row="0" Grid.Column="2" Text="Excluir" Style="{StaticResource ButtonDanger}" Margin="4,0" Clicked="OnDeleteButtonClicked" />
+                                        <Button Grid.Row="0" Grid.Column="1" Text="Editar" Style="{StaticResource ButtonSmall}" Margin="4,0" MinimumWidthRequest="70" Clicked="OnEditButtonClicked" />
+                                        <Button Grid.Row="0" Grid.Column="2" Text="Excluir" Style="{StaticResource ButtonDanger}" Margin="4,0" MinimumWidthRequest="70" Clicked="OnDeleteButtonClicked" />
                                     </Grid>
                                 </Border>
                             </Grid>
