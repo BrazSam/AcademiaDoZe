@@ -90,15 +90,15 @@ public partial class ConfigPage : ContentPage
                 SqliteContainer.IsVisible = false;
                 ServidorBancoGrid.IsVisible = true;
                 CredenciaisGrid.IsVisible = true;
-                ServidorEntry.Placeholder = "Ex: 10.30.21.16 ou localhost";
+                ServidorEntry.Placeholder = "Ex: localhost";
                 BancoEntry.Placeholder = "Ex: db_academia_do_ze";
-                UsuarioEntry.Placeholder = "Ex: root";
+                UsuarioEntry.Placeholder = "Ex: braz";
                 ComplementoLabel.Text = "Complemento (Porta / Timeout)";
                 ComplementoEntry.Placeholder = "Connection Timeout=5;Default Command Timeout=30;";
-                ServidorEntry.Text = Preferences.Get("MySql_Servidor", Preferences.Get("Servidor", "10.30.21.16"));
+                ServidorEntry.Text = Preferences.Get("MySql_Servidor", Preferences.Get("Servidor", "localhost"));
                 BancoEntry.Text = Preferences.Get("MySql_Banco", Preferences.Get("Banco", "db_academia_do_ze"));
-                UsuarioEntry.Text = Preferences.Get("MySql_Usuario", Preferences.Get("Usuario", "root"));
-                SenhaEntry.Text = Preferences.Get("MySql_Senha", Preferences.Get("Senha", "abcBolinhas12345"));
+                UsuarioEntry.Text = Preferences.Get("MySql_Usuario", Preferences.Get("Usuario", "braz"));
+                SenhaEntry.Text = Preferences.Get("MySql_Senha", Preferences.Get("Senha", "SamuelBraz"));
                 ComplementoEntry.Text = Preferences.Get("MySql_Complemento", Preferences.Get("Complemento", "Connection Timeout=5;Default Command Timeout=30;"));
                 break;
         }
