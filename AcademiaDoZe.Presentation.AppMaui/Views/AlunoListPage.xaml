@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+ xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoListPage"
+ xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+ x:DataType="vm:AlunoListViewModel"
+ xmlns:dto="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application" xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+ Title="{Binding Title}">
+    <!-- <ContentPage.Resources> é o dicionário de recursos local da página. -->
+    <!-- Aqui vamos criar um DataTemplate com toda a estrutura para exibir os dados de um aluno, de forma individual.
+ Depois ela será utilizada dentro da estrutura que vai exibir os dados, no caso um CollectionView.
+ Repare no uso de Converter={StaticResource FotoToImageSourceConverter}, para converter o array de bytes em ImageSource.
+ Utilizamos OnIdiom para ajustar propriedades conforme o tipo de dispositivo: Phone, Tablet, Desktop, TV, Watch e Default. -->
+    <ContentPage.Resources>
+        <converters:FotoToImageSourceConverter x:Key="FotoToImageSourceConverter" />
+        <!-- criamos um template único para Phone, Tablet, Desktop, TV, Watch e Default -->
+        <DataTemplate x:Key="AlunoItemTemplate" x:DataType="dto:AlunoDto">
+            <Grid Padding="1" Margin="5">
+                <Border Style="{StaticResource CardBorder}" Margin="10">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto,Auto">
+                        <Image Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="7" Source="{Binding Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" Margin="0,0,10,0" >
+                            <!-- HeightRequest conforme OnIdiom - utilizando objeto filho -->
+                            <Image.HeightRequest>
+                                <OnIdiom x:TypeArguments="x:Double">
+                                    <OnIdiom.Phone>110</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>120</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>120</OnIdiom.Desktop>
+                                    <OnIdiom.TV>140</OnIdiom.TV>
+                                    <OnIdiom.Default>110</OnIdiom.Default>
+                                </OnIdiom>
+                            </Image.HeightRequest>
+                            <!-- WidthRequest conforme OnIdiom - utilizando objeto filho -->
+                            <Image.WidthRequest>
+                                <OnIdiom x:TypeArguments="x:Double">
+                                    <OnIdiom.Phone>110</OnIdiom.Phone>
+                                    <OnIdiom.Tablet>120</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>120</OnIdiom.Desktop>
+                                    <OnIdiom.TV>140</OnIdiom.TV>
+                                    <OnIdiom.Default>110</OnIdiom.Default>
+                                </OnIdiom>
+                            </Image.WidthRequest>
+                        </Image>
+                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold" FontSize="16" Margin="0,0,0,5"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Cpf, StringFormat='CPF: {0}'}" Margin="0,0,0,5"/>
+                        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Telefone, StringFormat='Telefone: {0}'}" Margin="0,0,0,5"/>
+                        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Email, StringFormat='E-mail: {0}'}" Margin="0,0,0,5"/>
+                        <Label Grid.Row="4" Grid.Column="0" Text="{Binding DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}" Margin="0,0,0,5"/>
+                        <Label Grid.Row="5" Grid.Column="0" Margin="0,0,0,5">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Endereco.Nome}"/>
+                                    <Span Text=", "/>
+                                    <Span Text="{Binding Numero}"/>
+                                    <Span Text=" - "/>
+                                    <Span Text="{Binding Endereco.Bairro}"/>
+                                    <Span Text=", "/>
+                                    <Span Text="{Binding Endereco.Cidade}"/>
+                                    <Span Text=" - "/>
+                                    <Span Text="{Binding Endereco.Estado}"/>
+                                    <Span Text=" (CEP: "/>
+                                    <Span Text="{Binding Endereco.Cep}"/>
+                                    <Span Text=")"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="6" Grid.Column="0" Text="{Binding Complemento, StringFormat='Complemento: {0}'}" Margin="0,0,0,5"/>
+                        <Button Grid.Row="0" Grid.Column="1" Text="" Style="{StaticResource ButtonSmall}" Margin="4,0" Clicked="OnEditButtonClicked">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe3c9;" />
+                            </Button.ImageSource>
+                        </Button>
+                        <Button Grid.Row="0" Grid.Column="2" Text="" Style="{StaticResource ButtonDanger}" Margin="4,0" Clicked="OnDeleteButtonClicked">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe872;" />
+                            </Button.ImageSource>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <!-- estrutura principal da página -->
+    <Grid RowDefinitions="Auto,*">
+        <!-- Search Bar -->
+        <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="15,10">
+            <Grid ColumnDefinitions="Auto,10,*,10,Auto" VerticalOptions="Center">
+                <Picker Grid.Column="0" Title="" ItemsSource="{Binding FilterTypes}" SelectedItem="{Binding SelectedFilterType}" WidthRequest="110" HorizontalOptions="Start" HeightRequest="40" VerticalOptions="Center"/>
+                <Entry Grid.Column="2" Text="{Binding SearchText}" Placeholder="Digite o valor..." HeightRequest="40" VerticalOptions="Center" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchAlunosCommand}" />
+                <Button Grid.Column="4" Text="" Style="{StaticResource ButtonPrimary}" FontSize="14" WidthRequest="80" HeightRequest="40" Command="{Binding SearchAlunosCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
+        </Border>
+        <!-- lista/grade + FAB -->
+        <!-- ajuste conforme tipo: Phone, Tablet, Desktop, TV, Watch e Default -->
+        <!-- exibe o template criado acima: AlunoItemTemplate -->
+        <Grid Grid.Row="1">
+            <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+                <!-- mostra os dados dos alunos -->
+                <CollectionView ItemsSource="{Binding Alunos}" SelectionMode="None" Margin="10">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical">
+                            <!-- Span conforme OnIdiom - utilizando objeto filho -->
+                            <!-- lista ou grade -->
+                            <GridItemsLayout.Span>
+                                <OnIdiom x:TypeArguments="x:Int32">
+                                    <OnIdiom.Phone>1</OnIdiom.Phone>
+                                    <OnIdiom.Default>1</OnIdiom.Default>
+                                    <OnIdiom.Tablet>2</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>3</OnIdiom.Desktop>
+                                    <OnIdiom.TV>4</OnIdiom.TV>
+                                </OnIdiom>
+                            </GridItemsLayout.Span>
+                        </GridItemsLayout>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyView>
+                        <StackLayout VerticalOptions="Center">
+                            <Label Text="Nenhum aluno encontrado" HorizontalOptions="Center" Style="{StaticResource SubHeadline}"/>
+                            <Button Text="Adicionar Primeiro Aluno" Command="{Binding AddAlunoCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="50" Margin="0,20,0,0"/>
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+                    <!-- utiliza o DataTemplate criado acima -->
+                    <CollectionView.ItemTemplate>
+                        <StaticResource Key="AlunoItemTemplate" />
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+            <!-- FAB -->
+            <Button Text="" Command="{Binding AddAlunoCommand}" Style="{StaticResource ButtonPrimary}" WidthRequest="56" HeightRequest="56" HorizontalOptions="End" VerticalOptions="End" Margin="20">
+                <Button.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Offset="0,4" Radius="8" Opacity="0.3"/>
+                </Button.Shadow>
+                <Button.ImageSource>
+                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe145;" />
+                </Button.ImageSource>
+            </Button>
+        </Grid>
+        <ActivityIndicator Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
+    </Grid>
+</ContentPage>
