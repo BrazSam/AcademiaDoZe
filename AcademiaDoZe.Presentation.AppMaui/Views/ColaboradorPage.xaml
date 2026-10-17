@@ -48,11 +48,18 @@
                     </StackLayout>
                     <StackLayout Spacing="5">
                         <Label Text="Email"/>
-                        <Entry Text="{Binding Colaborador.Email}" Placeholder="exemplo@email.com" Keyboard="Email" MaxLength="100" ClearButtonVisibility="WhileEditing"/>
+                        <Entry x:Name="EmailEntry" Unfocused="OnEmailUnfocused" Text="{Binding Colaborador.Email}" Placeholder="exemplo@email.com" Keyboard="Email" MaxLength="100" ClearButtonVisibility="WhileEditing"/>
+                        <Label x:Name="EmailErrorLabel" TextColor="Red" IsVisible="False"/>
                     </StackLayout>
                     <StackLayout Spacing="5">
                         <Label Text="Senha"/>
-                        <Entry Text="{Binding Colaborador.Senha}" Placeholder="Digite a senha..." IsPassword="True" MaxLength="50"/>
+                        <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                            <Entry x:Name="SenhaEntry" Grid.Column="0" Text="{Binding Colaborador.Senha}" Placeholder="Digite a senha..." IsPassword="True" MaxLength="50" />
+                            <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center" Spacing="6" Padding="6,0,0,0">
+                                <Switch x:Name="ShowPasswordSwitch" Toggled="OnShowPasswordToggled" VerticalOptions="Center"/>
+                                <Label Text="Mostrar" VerticalOptions="Center"/>
+                            </StackLayout>
+                        </Grid>
                         <Label Text="* Deixe em branco para manter a senha atual cadastrada." FontSize="11" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" IsVisible="{Binding IsEditMode}" Margin="2,-2,0,0"/>
                     </StackLayout>
                     <StackLayout Spacing="5">
@@ -61,7 +68,11 @@
                     </StackLayout>
                     <StackLayout Spacing="5">
                         <Label Text="Foto"/>
-                        <Image Source="{Binding Colaborador.Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="120" WidthRequest="120"/>
+                        <Image Source="{Binding Colaborador.Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="120" WidthRequest="120">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelecionarFotoCommand}" NumberOfTapsRequired="1" />
+                            </Image.GestureRecognizers>
+                        </Image>
                         <Button Text="Selecionar Imagem" Command="{Binding SelecionarFotoCommand}" Style="{StaticResource ButtonPrimary}">
                             <Button.ImageSource>
                                 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe226;" />

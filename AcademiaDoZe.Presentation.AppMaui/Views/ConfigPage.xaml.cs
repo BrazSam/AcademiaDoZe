@@ -5,11 +5,17 @@ namespace AcademiaDoZe.Presentation.AppMaui.Views;
 
 public partial class ConfigPage : ContentPage
 {
+    private bool _isCarregando = true;
     public ConfigPage()
     {
         InitializeComponent();
         CarregarTema();
         CarregarBanco();
+        _isCarregando = false;
+
+        // Assina o evento SelectedIndexChanged do TemaPicker
+        // Utilizando o tratador OnSalvarTemaClicked já existente
+        TemaPicker.SelectedIndexChanged += OnSalvarTemaClicked; 
     }
     private void CarregarTema()
     {
@@ -18,13 +24,16 @@ public partial class ConfigPage : ContentPage
     }
     private async void OnSalvarTemaClicked(object sender, EventArgs e)
     {
+        if (_isCarregando || TemaPicker.SelectedIndex < 0)
+            return;
+
         string selectedTheme = TemaPicker.SelectedIndex switch { 0 => "light", 1 => "dark", _ => "system" };
         Preferences.Set("Tema", selectedTheme);
-        // Disparar mensagem para uso na recarga dinâmica
+        // recarga dinâmica do tema
         WeakReferenceMessenger.Default.Send(new TemaPreferencesUpdatedMessage("TemaAlterado"));
-        await DisplayAlert("Sucesso", "Dados salvos com sucesso!", "OK");
-        // Navegar para dashboard
-        await Shell.Current.GoToAsync("//dashboard");
+        
+       
+        
     }
 
     #region Banco de Dados

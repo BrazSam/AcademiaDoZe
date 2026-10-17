@@ -101,13 +101,14 @@ public partial class ColaboradorListViewModel : BaseViewModel
             else if (SelectedFilterType == "CPF")
             {
                 var cpfLimpo = new string([.. SearchText.Where(char.IsDigit)]);
-                if (cpfLimpo.Length != 11)
+                if (string.IsNullOrWhiteSpace(cpfLimpo))
                 {
-                    await Shell.Current.DisplayAlertAsync("Validação", "Para buscar por CPF, informe os 11 dígitos numéricos.", "OK"); return;
+                    resultados = await _colaboradorService.ObterTodosAsync(cts.Token) ?? [];
                 }
-                var colaborador = await _colaboradorService.ObterPorCpfAsync(cpfLimpo, cts.Token);
-                if (colaborador != null)
-                    resultados = [colaborador];
+                else
+                {
+                    resultados = await _colaboradorService.ObterPorCpfAsync(cpfLimpo, cts.Token) ?? [];
+                }
             }
             else if (SelectedFilterType == "Id")
             {

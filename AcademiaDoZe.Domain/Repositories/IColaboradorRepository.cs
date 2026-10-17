@@ -6,7 +6,7 @@ namespace AcademiaDoZe.Domain.Repositories;
 public interface IColaboradorRepository : IRepository<Colaborador>, IDisposable
 {
     // Métodos específicos do domínio
-    Task<Colaborador?> ObterPorCpf(Cpf cpf, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Colaborador>> ObterPorCpf(string cpf, CancellationToken cancellationToken = default);
     Task<Colaborador?> ObterPorEmail(Email email, CancellationToken cancellationToken = default);
     Task<bool> CpfJaExiste(Cpf cpf, int? id = null, CancellationToken cancellationToken = default);
     Task<bool> EmailJaExiste(Email email, int? id = null, CancellationToken cancellationToken = default);

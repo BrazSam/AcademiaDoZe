@@ -26,7 +26,7 @@ public static class ColaboradorMappingExtensions
             Vinculo = colaborador.Vinculo.ToApplication()
         };
     }
-    public static Colaborador ToEntity(this ColaboradorDto colaboradorDto, Logradouro? logradouro = null)
+    public static Colaborador ToEntity(this ColaboradorDto colaboradorDto, Logradouro? logradouro = null, string? senhaHash = null)
     {
         ArgumentNullException.ThrowIfNull(colaboradorDto);
         var logradouroEntidade = logradouro ?? (colaboradorDto.Endereco != null ? colaboradorDto.Endereco.ToEntity() : null) ?? throw new InvalidOperationException("Logradouro/Endereço é obrigatório para converter o Colaborador.");
@@ -46,7 +46,7 @@ public static class ColaboradorMappingExtensions
         logradouroEntidade,
         colaboradorDto.Numero,
         colaboradorDto.Complemento ?? string.Empty,
-        colaboradorDto.Senha ?? string.Empty,
+        senhaHash ?? colaboradorDto.Senha ?? string.Empty,
         foto!,
         colaboradorDto.DataAdmissao,
         colaboradorDto.Tipo.ToDomain(),
@@ -58,7 +58,7 @@ public static class ColaboradorMappingExtensions
         }
         return result.Value!;
     }
-    public static Colaborador UpdateFromDto(this Colaborador colaborador, ColaboradorDto colaboradorDto, Logradouro? logradouro = null)
+    public static Colaborador UpdateFromDto(this Colaborador colaborador, ColaboradorDto colaboradorDto, Logradouro? logradouro = null, string? senhaHash = null)
     {
         ArgumentNullException.ThrowIfNull(colaborador);
         ArgumentNullException.ThrowIfNull(colaboradorDto);
@@ -69,11 +69,11 @@ public static class ColaboradorMappingExtensions
             var fotoResult = Arquivo.Criar(colaboradorDto.Foto.Conteudo);
             if (fotoResult.IsSuccess) foto = fotoResult.Value;
         }
-        string senha = !string.IsNullOrWhiteSpace(colaboradorDto.Senha) ? colaboradorDto.Senha : colaborador.Senha.Valor;
+        string senha = senhaHash ?? (!string.IsNullOrWhiteSpace(colaboradorDto.Senha) ? colaboradorDto.Senha : colaborador.Senha.Valor);
         var result = Colaborador.Criar(
         colaborador.Id,
         colaboradorDto.Nome ?? colaborador.Nome,
-        colaborador.Cpf.Valor,
+        colaboradorDto.Cpf,
         colaboradorDto.DataNascimento != default ? colaboradorDto.DataNascimento : colaborador.DataNascimento,
         colaboradorDto.Telefone ?? colaborador.Telefone.Valor,
         colaboradorDto.Email ?? colaborador.Email.Valor,
@@ -83,8 +83,8 @@ public static class ColaboradorMappingExtensions
         senha,
         foto!,
         colaboradorDto.DataAdmissao != default ? colaboradorDto.DataAdmissao : colaborador.DataAdmissao,
-        colaboradorDto.Tipo != default ? colaboradorDto.Tipo.ToDomain() : colaborador.Tipo,
-        colaboradorDto.Vinculo != default ? colaboradorDto.Vinculo.ToDomain() : colaborador.Vinculo
+        colaboradorDto.Tipo.ToDomain(),
+        colaboradorDto.Vinculo.ToDomain()
         );
         if (result.IsFailure)
         {

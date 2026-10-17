@@ -185,21 +185,29 @@ public class ColaboradorRepository : BaseRepository, IColaboradorRepository
             throw new InfrastructureException("ERRO_REMOVER_COLABORADOR", $"Erro ao remover colaborador ID {id}: {ex.Message}", ex);
         }
     }
-    public async Task<Colaborador?> ObterPorCpf(Cpf cpf, CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            string query = $"{BaseSelectQuery} WHERE c.cpf = @Cpf";
-            await using var command = await CreateCommandAsync(query, cancellationToken);
-            command.AddParameter("@Cpf", cpf.Valor, DbType.String);
-            await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-            return await reader.ReadAsync(cancellationToken) ? Map(reader) : null;
-        }
-        catch (DbException ex)
-        {
-            throw new InfrastructureException("ERRO_OBTER_POR_CPF", $"Erro ao obter colaborador por CPF {cpf.Valor}: {ex.Message}", ex);
-        }
-    }
+    //nova versão, que busca por prefixo do CPF, retornando múltiplos resultados via LIKE
+         public async Task<IEnumerable<Colaborador>> ObterPorCpf(string cpf, CancellationToken cancellationToken = default)
+            {
+                try
+                {
+                    var apenasDigitos = new string([.. (cpf ?? string.Empty).Where(char.IsDigit)]);
+                    string query = $"{BaseSelectQuery} WHERE c.cpf LIKE @Cpf";
+                    await using var command = await CreateCommandAsync(query, cancellationToken);
+                    command.AddParameter("@Cpf", $"{apenasDigitos}%", DbType.String);
+                    await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+                    var colaboradores = new List<Colaborador>();
+                    while (await reader.ReadAsync(cancellationToken))
+                    {
+                        colaboradores.Add(Map(reader));
+                    }
+
+                    return colaboradores;
+                }
+                catch (DbException ex)
+                {
+                    throw new InfrastructureException("ERRO_OBTER_POR_CPF", $"Erro ao obter colaborador por CPF {cpf}: {ex.Message}", ex);
+                }
+            }
 
 
     public async Task<Colaborador?> ObterPorEmail(Email email, CancellationToken cancellationToken = default)

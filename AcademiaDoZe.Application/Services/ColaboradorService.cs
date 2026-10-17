@@ -76,16 +76,27 @@ public class ColaboradorService : IColaboradorService
         }
         return await repo.Remover(id, cancellationToken);
     }
-    public async Task<ColaboradorDto?> ObterPorCpfAsync(string cpf, CancellationToken cancellationToken = default)
+    // nova versão, retorna uma coleção de ColaboradorDTO - pode ser vazia
+    public async Task<IEnumerable<ColaboradorDto>> ObterPorCpfAsync(string cpf, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(cpf))
             throw new ArgumentException("CPF não pode ser vazio.", nameof(cpf));
-        var cpfResult = Cpf.Criar(cpf);
-        if (cpfResult.IsFailure)
-            throw new ArgumentException($"CPF inválido: {string.Join(", ", cpfResult.Notifications.Select(n => n.Mensagem))}", nameof(cpf));
+        var apenasDigitos = new string([.. cpf.Where(char.IsDigit)]);
+        if (string.IsNullOrWhiteSpace(apenasDigitos))
+            return Enumerable.Empty<ColaboradorDto>();
         using var repo = _repoFactory();
-        var colaborador = await repo.ObterPorCpf(cpfResult.Value!, cancellationToken);
-        return colaborador?.ToDto();
+        var colaboradores = (await repo.ObterPorCpf(apenasDigitos, cancellationToken)).ToList();
+        if (_logradouroRepoFactory == null)
+            return colaboradores.Select(c => c.ToDto()).ToList();
+
+        using var logradouroRepo = _logradouroRepoFactory();
+        var resultados = new List<ColaboradorDto>();
+        foreach (var colaborador in colaboradores)
+        {
+            var logradouro = await logradouroRepo.ObterPorId(colaborador.Endereco.LogradouroId, cancellationToken);
+            resultados.Add(colaborador.ToDto(logradouro));
+        }
+        return resultados;
     }
 
     public async Task<ColaboradorDto?> ObterPorEmailAsync(string email, CancellationToken cancellationToken = default)
@@ -155,6 +166,7 @@ public class ColaboradorService : IColaboradorService
                 throw new InvalidOperationException($"Já existe um colaborador cadastrado com o Email {colaboradorDto.Email}.");
             }
         }
+        string? senhaHash = null;
         if (!string.IsNullOrWhiteSpace(colaboradorDto.Senha))
         {
             var senhaValidacao = Senha.Criar(colaboradorDto.Senha);
@@ -162,7 +174,7 @@ public class ColaboradorService : IColaboradorService
             {
                 throw new ArgumentException($"Senha não atende aos requisitos mínimos: {string.Join(", ", senhaValidacao.Notifications.Select(n => n.Mensagem))}", nameof(colaboradorDto));
             }
-            colaboradorDto.Senha = PasswordHasher.Hash(colaboradorDto.Senha);
+            senhaHash = PasswordHasher.Hash(colaboradorDto.Senha);
         }
         Domain.Entities.Logradouro? logradouro = null;
         if (_logradouroRepoFactory != null && colaboradorDto.Endereco != null && colaboradorDto.Endereco.Id > 0)
@@ -171,7 +183,7 @@ public class ColaboradorService : IColaboradorService
             logradouro = await logradouroRepo.ObterPorId(colaboradorDto.Endereco.Id, cancellationToken)
             ?? throw new KeyNotFoundException($"Logradouro com ID {colaboradorDto.Endereco.Id} não encontrado.");
         }
-        var colaborador = colaboradorDto.ToEntity(logradouro);
+        var colaborador = colaboradorDto.ToEntity(logradouro, senhaHash);
         var adicionado = await repo.Adicionar(colaborador, cancellationToken);
         return adicionado.ToDto(logradouro);
     }
@@ -203,6 +215,7 @@ public class ColaboradorService : IColaboradorService
                 throw new InvalidOperationException($"Já existe outro colaborador cadastrado com o Email {colaboradorDto.Email}.");
             }
         }
+        string? senhaHash = null;
         if (!string.IsNullOrWhiteSpace(colaboradorDto.Senha))
         {
             var senhaValidacao = Senha.Criar(colaboradorDto.Senha);
@@ -210,7 +223,7 @@ public class ColaboradorService : IColaboradorService
             {
                 throw new ArgumentException($"Senha não atende aos requisitos mínimos: {string.Join(", ", senhaValidacao.Notifications.Select(n => n.Mensagem))}", nameof(colaboradorDto));
             }
-            colaboradorDto.Senha = PasswordHasher.Hash(colaboradorDto.Senha);
+            senhaHash = PasswordHasher.Hash(colaboradorDto.Senha);
         }
         Domain.Entities.Logradouro? logradouro = null;
         int logradouroId = (colaboradorDto.Endereco != null && colaboradorDto.Endereco.Id > 0)
@@ -222,7 +235,7 @@ public class ColaboradorService : IColaboradorService
             logradouro = await logradouroRepo.ObterPorId(logradouroId, cancellationToken)
             ?? throw new KeyNotFoundException($"Logradouro com ID {logradouroId} não encontrado.");
         }
-        var colaboradorAtualizado = colaboradorExistente.UpdateFromDto(colaboradorDto, logradouro);
+        var colaboradorAtualizado = colaboradorExistente.UpdateFromDto(colaboradorDto, logradouro, senhaHash);
         var atualizado = await repo.Atualizar(colaboradorAtualizado, cancellationToken);
         return atualizado.ToDto(logradouro);
     }

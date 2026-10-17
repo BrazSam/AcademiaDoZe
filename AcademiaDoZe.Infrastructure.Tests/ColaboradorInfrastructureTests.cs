@@ -164,14 +164,13 @@ public class ColaboradorInfrastructureTests : TestBase
     }
 
     [Fact]
-    public async Task Colaborador_ObterPorCpf_SucessoENulo()
+    public async Task Colaborador_ObterPorCpf_SucessoEVazio()
     {
         var colaborador = await CriarEInserirColaboradorAsync(_colaboradorRepo, _logradouroRepo, NomeTeste, SobrenomeTeste, SenhaSgbd());
-        var obtido = await _colaboradorRepo.ObterPorCpf(colaborador.Cpf);
-        Assert.NotNull(obtido);
-        Assert.Equal(colaborador.Id, obtido.Id);
-        var naoObtido = await _colaboradorRepo.ObterPorCpf(Cpf.Criar(GerarCpf()).Value!);
-        Assert.Null(naoObtido);
+        var obtidos = await _colaboradorRepo.ObterPorCpf(colaborador.Cpf.Valor);
+        Assert.Equal(colaborador.Id, Assert.Single(obtidos).Id);
+        var naoObtidos = await _colaboradorRepo.ObterPorCpf("00000000000");
+        Assert.Empty(naoObtidos);
     }
 
     [Fact]

@@ -1,8 +1,10 @@
 using AcademiaDoZe.Presentation.AppMaui.ViewModels;
+using Microsoft.Maui.Controls;
 namespace AcademiaDoZe.Presentation.AppMaui.Views;
 
 public partial class ColaboradorPage : ContentPage
 {
+    private bool _initialized;
     public ColaboradorPage(ColaboradorViewModel viewModel)
     {
         InitializeComponent();
@@ -11,9 +13,20 @@ public partial class ColaboradorPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        if (BindingContext is ColaboradorViewModel viewModel)
+        if (!_initialized && BindingContext is ColaboradorViewModel viewModel)
         {
+            _initialized = true;
             await viewModel.InitializeAsync();
         }
     }
+
+    private void OnShowPasswordToggled(object? sender, ToggledEventArgs e)
+    {
+        if (SenhaEntry is not null)
+        {
+            // Switch.IsToggled == true -> mostrar senha -> IsPassword = false
+            SenhaEntry.IsPassword = !e.Value;
+        }
+    }
+
 }
