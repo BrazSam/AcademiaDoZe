@@ -67,9 +67,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.120" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.14" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -99,6 +99,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LogradouroPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MatriculaListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MatriculaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
