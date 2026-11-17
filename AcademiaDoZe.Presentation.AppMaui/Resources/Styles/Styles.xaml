@@ -513,4 +513,24 @@
         <Setter Property="WidthRequest" Value="60"/>
     </Style>
 
+    <!-- Ações dentro dos cartões das listagens (editar/excluir) -->
+    <Style TargetType="Button" x:Key="ButtonCardAction" BasedOn="{StaticResource ButtonIcon}">
+        <Setter Property="WidthRequest" Value="40"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="MinimumWidthRequest" Value="40"/>
+        <Setter Property="MinimumHeightRequest" Value="40"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+    </Style>
+
+    <!-- Botão ao lado de um campo (Buscar CPF / Buscar CEP): mesma altura do campo -->
+    <Style TargetType="Button" x:Key="ButtonInline" BasedOn="{StaticResource ButtonPrimary}">
+        <Setter Property="HeightRequest" Value="-1"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="MinimumWidthRequest" Value="150"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+
 </ResourceDictionary>

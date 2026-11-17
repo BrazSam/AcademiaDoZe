@@ -6,14 +6,14 @@
  x:DataType="vm:LogradouroViewModel"
  Title="{Binding Title}">
     <ScrollView>
-        <StackLayout Spacing="20">
+        <StackLayout Spacing="20" MaximumWidthRequest="900">
             <!-- CEP Section -->
             <Border Style="{StaticResource CardBorder}" Margin="15,10">
                 <StackLayout Spacing="5">
                     <Label Text="CEP"/>
                     <Grid ColumnDefinitions="*,Auto">
                         <Entry Grid.Column="0" Text="{Binding Logradouro.Cep}" Placeholder="00000-000" Keyboard="Numeric" Margin="0,0,10,0"/>
-                        <Button Grid.Column="1" Text="Buscar CEP" Command="{Binding SearchByCepCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="40" Padding="15,0">
+                        <Button Grid.Column="1" Text="Buscar CEP" Command="{Binding SearchByCepCommand}" Style="{StaticResource ButtonInline}">
                             <Button.ImageSource>
                                 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
                             </Button.ImageSource>

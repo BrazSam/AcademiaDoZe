@@ -12,6 +12,7 @@
     <ContentPage.Resources>
         <converters:EnumDisplayConverter x:Key="EnumDisplay" />
         <converters:RestricoesFlagsDisplayConverter x:Key="RestricoesDisplay" />
+        <converters:MascaraConverter x:Key="MascaraConverter" />
         <!-- Template único para Phone, Tablet, Desktop, TV, Watch e Default -->
         <DataTemplate x:Key="MatriculaItemTemplate" x:DataType="dto:MatriculaDto">
             <SwipeView x:Name="RowSwipe">
@@ -31,7 +32,7 @@
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="CPF: "/>
-                                        <Span Text="{Binding AlunoMatricula.Cpf}"/>
+                                        <Span Text="{Binding AlunoMatricula.Cpf, Converter={StaticResource MascaraConverter}, ConverterParameter='###.###.###-##'}"/>
                                         <Span Text=" • Nasc: "/>
                                         <Span Text="{Binding AlunoMatricula.DataNascimento, StringFormat='{0:dd/MM/yyyy}'}"/>
                                     </FormattedString>
@@ -89,8 +90,8 @@
         </DataTemplate>
 
     </ContentPage.Resources>
-    
-    
+
+
     <!-- Lista de Matrículas -->
     <Grid RowDefinitions="Auto,*">
         <!-- Search Bar -->

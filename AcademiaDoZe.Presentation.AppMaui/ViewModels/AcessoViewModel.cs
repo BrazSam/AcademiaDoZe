@@ -173,9 +173,9 @@ public partial class AcessoViewModel : BaseViewModel
         {
             MostrarAcessoNegado(ex.Message);
         }
-        catch (ArgumentException ex) // CPF inválido
+        catch (ArgumentException) // CPF inválido (dígitos verificadores não batem)
         {
-            MostrarAcessoNegado(ex.Message);
+            MostrarAcessoNegado("CPF inválido. Confira os números digitados.");
         }
         catch (Exception ex)
         {

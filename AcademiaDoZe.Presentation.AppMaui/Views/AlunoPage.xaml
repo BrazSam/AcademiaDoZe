@@ -4,6 +4,7 @@
  x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoPage"
  xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
  xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+ xmlns:behaviors="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Behaviors"
  x:DataType="vm:AlunoViewModel"
  Title="{Binding Title}">
     <ContentPage.Resources>
@@ -11,14 +12,18 @@
         <converters:DateOnlyToDateTimeConverter x:Key="DateOnlyConverter" />
     </ContentPage.Resources>
     <ScrollView>
-        <StackLayout Spacing="20">
+        <StackLayout Spacing="20" MaximumWidthRequest="900">    
             <!-- CPF Section -->
             <Border Style="{StaticResource CardBorder}" Margin="15,10">
                 <StackLayout Spacing="5">
                     <Label Text="CPF"/>
                     <Grid ColumnDefinitions="*,Auto">
-                        <Entry Grid.Column="0" Text="{Binding Aluno.Cpf}" Placeholder="000.000.000-00" Keyboard="Numeric" MaxLength="14" Margin="0,0,10,0" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCpfCommand}"/>
-                        <Button Grid.Column="1" Text="Buscar CPF" Command="{Binding SearchByCpfCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="40" Padding="15,0">
+                        <Entry Grid.Column="0" Text="{Binding Aluno.Cpf}" Placeholder="000.000.000-00" Keyboard="Numeric" MaxLength="14" Margin="0,0,10,0" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCpfCommand}">
+                            <Entry.Behaviors>
+                                <behaviors:MascaraBehavior Mascara="###.###.###-##" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Button Grid.Column="1" Text="Buscar CPF" Command="{Binding SearchByCpfCommand}" Style="{StaticResource ButtonInline}">
                             <Button.ImageSource>
                                 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
                             </Button.ImageSource>
@@ -40,7 +45,11 @@
                     </StackLayout>
                     <StackLayout Spacing="5">
                         <Label Text="Telefone"/>
-                        <Entry Text="{Binding Aluno.Telefone}" Placeholder="(00) 00000-0000" Keyboard="Telephone" MaxLength="15" ClearButtonVisibility="WhileEditing"/>
+                        <Entry Text="{Binding Aluno.Telefone}" Placeholder="(00) 00000-0000" Keyboard="Telephone" MaxLength="15" ClearButtonVisibility="WhileEditing">
+                            <Entry.Behaviors>
+                                <behaviors:MascaraBehavior Mascara="(##) #####-####" />
+                            </Entry.Behaviors>
+                        </Entry>
                     </StackLayout>
                     <StackLayout Spacing="5">
                         <Label Text="Email"/>
@@ -74,7 +83,7 @@
                     <!-- Busca CEP -->
                     <Grid ColumnDefinitions="*,Auto">
                         <Entry Grid.Column="0" Text="{Binding Aluno.Endereco.Cep}" Placeholder="00000-000" Keyboard="Numeric" MaxLength="9" Margin="0,0,10,0" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCepCommand}"/>
-                        <Button Grid.Column="1" Text="Buscar CEP" Command="{Binding SearchByCepCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="40" Padding="15,0">
+                        <Button Grid.Column="1" Text="Buscar CEP" Command="{Binding SearchByCepCommand}" Style="{StaticResource ButtonInline}">
                             <Button.ImageSource>
                                 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
                             </Button.ImageSource>

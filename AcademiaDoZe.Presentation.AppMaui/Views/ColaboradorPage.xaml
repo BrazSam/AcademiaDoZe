@@ -5,6 +5,7 @@
  xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
  xmlns:enums="clr-namespace:AcademiaDoZe.Application.Enums;assembly=AcademiaDoZe.Application"
  xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+ xmlns:behaviors="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Behaviors"
  x:DataType="vm:ColaboradorViewModel"
  Title="{Binding Title}">
     <ContentPage.Resources>
@@ -13,14 +14,18 @@
         <converters:EnumDisplayConverter x:Key="EnumDisplay" />
     </ContentPage.Resources>
     <ScrollView>
-        <StackLayout Spacing="20">
+        <StackLayout Spacing="20" MaximumWidthRequest="900">
             <!-- CPF Section -->
             <Border Style="{StaticResource CardBorder}" Margin="15,10">
                 <StackLayout Spacing="5">
                     <Label Text="CPF"/>
                     <Grid ColumnDefinitions="*,Auto">
-                        <Entry Grid.Column="0" Text="{Binding Colaborador.Cpf}" Placeholder="000.000.000-00" Keyboard="Numeric" MaxLength="14" Margin="0,0,10,0" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCpfCommand}"/>
-                        <Button Grid.Column="1" Text="Buscar CPF" Command="{Binding SearchByCpfCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="40" Padding="15,0">
+                        <Entry Grid.Column="0" Text="{Binding Colaborador.Cpf}" Placeholder="000.000.000-00" Keyboard="Numeric" MaxLength="14" Margin="0,0,10,0" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCpfCommand}">
+                            <Entry.Behaviors>
+                                <behaviors:MascaraBehavior Mascara="###.###.###-##" />
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Button Grid.Column="1" Text="Buscar CPF" Command="{Binding SearchByCpfCommand}" Style="{StaticResource ButtonInline}">
                             <Button.ImageSource>
                                 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
                             </Button.ImageSource>
@@ -44,7 +49,11 @@
                     </StackLayout>
                     <StackLayout Spacing="5">
                         <Label Text="Telefone"/>
-                        <Entry Text="{Binding Colaborador.Telefone}" Placeholder="(00) 00000-0000" Keyboard="Telephone" MaxLength="15" ClearButtonVisibility="WhileEditing"/>
+                        <Entry Text="{Binding Colaborador.Telefone}" Placeholder="(00) 00000-0000" Keyboard="Telephone" MaxLength="15" ClearButtonVisibility="WhileEditing">
+                            <Entry.Behaviors>
+                                <behaviors:MascaraBehavior Mascara="(##) #####-####" />
+                            </Entry.Behaviors>
+                        </Entry>
                     </StackLayout>
                     <StackLayout Spacing="5">
                         <Label Text="Email"/>
@@ -84,92 +93,92 @@
 
             <!-- Endereço -->
 
-                <!-- Endereço -->
-                <Border Style="{StaticResource CardBorder}" Margin="15,10">
-                    <StackLayout Spacing="15">
-                        <Label Text="Endereço" Style="{StaticResource SubHeadline}"/>
-                        <!-- Busca CEP -->
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Entry Grid.Column="0" Text="{Binding Colaborador.Endereco.Cep}" Placeholder="00000-000" Keyboard="Numeric" MaxLength="9" Margin="0,0,10,0" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCepCommand}"/>
-                            <Button Grid.Column="1" Text="Buscar CEP" Command="{Binding SearchByCepCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="40" Padding="15,0">
-                                <Button.ImageSource>
-                                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
-                                </Button.ImageSource>
-                            </Button>
+            <!-- Endereço -->
+            <Border Style="{StaticResource CardBorder}" Margin="15,10">
+                <StackLayout Spacing="15">
+                    <Label Text="Endereço" Style="{StaticResource SubHeadline}"/>
+                    <!-- Busca CEP -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry Grid.Column="0" Text="{Binding Colaborador.Endereco.Cep}" Placeholder="00000-000" Keyboard="Numeric" MaxLength="9" Margin="0,0,10,0" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCepCommand}"/>
+                        <Button Grid.Column="1" Text="Buscar CEP" Command="{Binding SearchByCepCommand}" Style="{StaticResource ButtonInline}">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
+                            </Button.ImageSource>
+                        </Button>
+                    </Grid>
+                    <!-- Aviso orientativo se não há endereço vinculado -->
+                    <Border Margin="0,5,0,0" Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light=#FFF3CD, Dark=#332701}" IsVisible="{Binding HasNoEnderecoVinculado}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" VerticalOptions="Center">
+                            <Label Grid.Column="0" Text="&#xe002;" FontFamily="MaterialIcons" TextColor="#D97706" VerticalOptions="Center" FontSize="20"/>
+                            <Label Grid.Column="1" Text="Nenhum logradouro vinculado. Digite o CEP acima e clique em 'Buscar CEP'." TextColor="{AppThemeBinding Light=#92400E, Dark=#FCD34D}" VerticalOptions="Center" FontSize="13" LineBreakMode="WordWrap"/>
                         </Grid>
-                        <!-- Aviso orientativo se não há endereço vinculado -->
-                        <Border Margin="0,5,0,0" Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light=#FFF3CD, Dark=#332701}" IsVisible="{Binding HasNoEnderecoVinculado}">
-                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" VerticalOptions="Center">
-                                <Label Grid.Column="0" Text="&#xe002;" FontFamily="MaterialIcons" TextColor="#D97706" VerticalOptions="Center" FontSize="20"/>
-                                <Label Grid.Column="1" Text="Nenhum logradouro vinculado. Digite o CEP acima e clique em 'Buscar CEP'." TextColor="{AppThemeBinding Light=#92400E, Dark=#FCD34D}" VerticalOptions="Center" FontSize="13" LineBreakMode="WordWrap"/>
-                            </Grid>
-                        </Border>
-                        <!-- Card com dados do logradouro vinculado -->
-                        <Border Margin="0,5,0,0" Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray900}}" IsVisible="{Binding HasEnderecoVinculado}">
-                            <StackLayout Spacing="4">
-                                <HorizontalStackLayout Spacing="6" Margin="0,0,0,4">
-                                    <Label Text="&#xe876;" FontFamily="MaterialIcons" TextColor="#16A34A" VerticalOptions="Center" FontSize="18"/>
-                                    <Label Text="Logradouro Vinculado" FontAttributes="Bold" TextColor="#16A34A" VerticalOptions="Center" FontSize="14"/>
-                                </HorizontalStackLayout>
-                                <Label Text="{Binding Colaborador.Endereco.Nome, StringFormat='Rua: {0}'}"/>
-                                <Label Text="{Binding Colaborador.Endereco.Bairro, StringFormat='Bairro: {0}'}"/>
-                                <Label Text="{Binding Colaborador.Endereco.Cidade, StringFormat='Cidade: {0}'}"/>
-                                <Label Text="{Binding Colaborador.Endereco.Estado, StringFormat='Estado: {0}'}"/>
-                                <Label Text="{Binding Colaborador.Endereco.Pais, StringFormat='País: {0}'}"/>
-                            </StackLayout>
-                        </Border>
-                        <StackLayout Spacing="5">
-                            <Label Text="Número"/>
-                            <Entry Text="{Binding Colaborador.Numero}" Placeholder="Número" MaxLength="20" ClearButtonVisibility="WhileEditing"/>
+                    </Border>
+                    <!-- Card com dados do logradouro vinculado -->
+                    <Border Margin="0,5,0,0" Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray900}}" IsVisible="{Binding HasEnderecoVinculado}">
+                        <StackLayout Spacing="4">
+                            <HorizontalStackLayout Spacing="6" Margin="0,0,0,4">
+                                <Label Text="&#xe876;" FontFamily="MaterialIcons" TextColor="#16A34A" VerticalOptions="Center" FontSize="18"/>
+                                <Label Text="Logradouro Vinculado" FontAttributes="Bold" TextColor="#16A34A" VerticalOptions="Center" FontSize="14"/>
+                            </HorizontalStackLayout>
+                            <Label Text="{Binding Colaborador.Endereco.Nome, StringFormat='Rua: {0}'}"/>
+                            <Label Text="{Binding Colaborador.Endereco.Bairro, StringFormat='Bairro: {0}'}"/>
+                            <Label Text="{Binding Colaborador.Endereco.Cidade, StringFormat='Cidade: {0}'}"/>
+                            <Label Text="{Binding Colaborador.Endereco.Estado, StringFormat='Estado: {0}'}"/>
+                            <Label Text="{Binding Colaborador.Endereco.Pais, StringFormat='País: {0}'}"/>
                         </StackLayout>
-                        <StackLayout Spacing="5">
-                            <Label Text="Complemento"/>
-                            <Entry Text="{Binding Colaborador.Complemento}" Placeholder="Complemento (opcional)" MaxLength="50" ClearButtonVisibility="WhileEditing"/>
-                        </StackLayout>
+                    </Border>
+                    <StackLayout Spacing="5">
+                        <Label Text="Número"/>
+                        <Entry Text="{Binding Colaborador.Numero}" Placeholder="Número" MaxLength="20" ClearButtonVisibility="WhileEditing"/>
                     </StackLayout>
-                </Border>
-                
-                <!-- Dados de Trabalho -->
+                    <StackLayout Spacing="5">
+                        <Label Text="Complemento"/>
+                        <Entry Text="{Binding Colaborador.Complemento}" Placeholder="Complemento (opcional)" MaxLength="50" ClearButtonVisibility="WhileEditing"/>
+                    </StackLayout>
+                </StackLayout>
+            </Border>
 
-                <Border Style="{StaticResource CardBorder}" Margin="15,10">
-                    <StackLayout Spacing="15">
-                        <Label Text="Dados de Trabalho" Style="{StaticResource SubHeadline}"/>
-                        <StackLayout Spacing="5">
-                            <Label Text="Data de Admissão"/>
-                            <DatePicker Date="{Binding Colaborador.DataAdmissao, Converter={StaticResource DateOnlyConverter}, Mode=TwoWay}" Format="dd/MM/yyyy"/>
-                        </StackLayout>
-                        <StackLayout Spacing="5">
-                            <Label Text="Tipo"/>
-                            <Picker ItemsSource="{Binding ColaboradorTipos}" SelectedItem="{Binding Colaborador.Tipo}">
-                                <Picker.ItemDisplayBinding>
-                                    <Binding Converter="{StaticResource EnumDisplay}" />
-                                </Picker.ItemDisplayBinding>
-                            </Picker>
-                        </StackLayout>
-                        <StackLayout Spacing="5">
-                            <Label Text="Vínculo"/>
-                            <Picker ItemsSource="{Binding ColaboradorVinculos}" SelectedItem="{Binding Colaborador.Vinculo}">
-                                <Picker.ItemDisplayBinding>
-                                    <Binding Converter="{StaticResource EnumDisplay}" />
-                                </Picker.ItemDisplayBinding>
-                            </Picker>
-                        </StackLayout>
+            <!-- Dados de Trabalho -->
+
+            <Border Style="{StaticResource CardBorder}" Margin="15,10">
+                <StackLayout Spacing="15">
+                    <Label Text="Dados de Trabalho" Style="{StaticResource SubHeadline}"/>
+                    <StackLayout Spacing="5">
+                        <Label Text="Data de Admissão"/>
+                        <DatePicker Date="{Binding Colaborador.DataAdmissao, Converter={StaticResource DateOnlyConverter}, Mode=TwoWay}" Format="dd/MM/yyyy"/>
                     </StackLayout>
-                </Border>
-                <!-- Botões de Ação -->
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,10">
-                    <Button Grid.Column="0" Text="Cancelar" Command="{Binding CancelCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="50">
-                        <Button.ImageSource>
-                            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe5c9;" />
-                        </Button.ImageSource>
-                    </Button>
-                    <Button Grid.Column="1" Text="Salvar" Command="{Binding SaveColaboradorCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="50">
-                        <Button.ImageSource>
-                            <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe161;" />
-                        </Button.ImageSource>
-                    </Button>
-                </Grid>
-               
+                    <StackLayout Spacing="5">
+                        <Label Text="Tipo"/>
+                        <Picker ItemsSource="{Binding ColaboradorTipos}" SelectedItem="{Binding Colaborador.Tipo}">
+                            <Picker.ItemDisplayBinding>
+                                <Binding Converter="{StaticResource EnumDisplay}" />
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
+                    </StackLayout>
+                    <StackLayout Spacing="5">
+                        <Label Text="Vínculo"/>
+                        <Picker ItemsSource="{Binding ColaboradorVinculos}" SelectedItem="{Binding Colaborador.Vinculo}">
+                            <Picker.ItemDisplayBinding>
+                                <Binding Converter="{StaticResource EnumDisplay}" />
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
+                    </StackLayout>
+                </StackLayout>
+            </Border>
+            <!-- Botões de Ação -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="15,10">
+                <Button Grid.Column="0" Text="Cancelar" Command="{Binding CancelCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="50">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe5c9;" />
+                    </Button.ImageSource>
+                </Button>
+                <Button Grid.Column="1" Text="Salvar" Command="{Binding SaveColaboradorCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="50">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe161;" />
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
+
             <!-- Loading Indicator -->
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
         </StackLayout>

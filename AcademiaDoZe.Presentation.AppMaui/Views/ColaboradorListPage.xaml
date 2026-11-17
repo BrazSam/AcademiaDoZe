@@ -16,6 +16,7 @@
     <ContentPage.Resources>
         <converters:FotoToImageSourceConverter x:Key="FotoToImageSourceConverter" />
         <converters:EnumDisplayConverter x:Key="EnumDisplay" />
+        <converters:MascaraConverter x:Key="MascaraConverter" />
         <!-- criamos um template único para Phone, Tablet, Desktop, TV, Watch e Default -->
         <DataTemplate x:Key="ColaboradorItemTemplate" x:DataType="dto:ColaboradorDto">
             <Grid Padding="1" Margin="5">
@@ -44,8 +45,8 @@
                             </Image.WidthRequest>
                         </Image>
                         <Label Grid.Row="0" Grid.Column="0" Text="{Binding Nome}" FontAttributes="Bold" FontSize="16" Margin="0,0,0,5"/>
-                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Cpf, StringFormat='CPF: {0}'}" Margin="0,0,0,5"/>
-                        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Telefone, StringFormat='Telefone: {0}'}" Margin="0,0,0,5"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Cpf, Converter={StaticResource MascaraConverter}, ConverterParameter='###.###.###-##', StringFormat='CPF: {0}'}" Margin="0,0,0,5"/>
+                        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Telefone, Converter={StaticResource MascaraConverter}, ConverterParameter='(##) #####-####', StringFormat='Telefone: {0}'}" Margin="0,0,0,5"/>
                         <Label Grid.Row="3" Grid.Column="0" Text="{Binding Email, StringFormat='E-mail: {0}'}" Margin="0,0,0,5"/>
                         <Label Grid.Row="4" Grid.Column="0" Text="{Binding DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}" Margin="0,0,0,5"/>
                         <Label Grid.Row="5" Grid.Column="0" Text="{Binding DataAdmissao, StringFormat='Admissão: {0:dd/MM/yyyy}'}" Margin="0,0,0,5"/>
@@ -70,14 +71,18 @@
                             </Label.FormattedText>
                         </Label>
                         <Label Grid.Row="9" Grid.Column="0" Text="{Binding Complemento, StringFormat='Complemento: {0}'}" Margin="0,0,0,5"/>
-                        <Button Grid.Row="0" Grid.Column="1" Text="" Style="{StaticResource ButtonSmall}" Margin="4,0" Clicked="OnEditButtonClicked">
+                        <Button Grid.Row="0" Grid.Column="1" Text="" Style="{StaticResource ButtonCardAction}" Margin="2,0"
+                                Clicked="OnEditButtonClicked" ToolTipProperties.Text="Editar" SemanticProperties.Description="Editar">
                             <Button.ImageSource>
-                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe3c9;" />
+                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe3c9;" Size="22"
+                                                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
                             </Button.ImageSource>
                         </Button>
-                        <Button Grid.Row="0" Grid.Column="2" Text="" Style="{StaticResource ButtonDanger}" Margin="4,0" Clicked="OnDeleteButtonClicked">
+                        <Button Grid.Row="0" Grid.Column="2" Text="" Style="{StaticResource ButtonCardAction}" Margin="2,0"
+                                Clicked="OnDeleteButtonClicked" ToolTipProperties.Text="Excluir" SemanticProperties.Description="Excluir">
                             <Button.ImageSource>
-                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe872;" />
+                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe872;" Size="22"
+                                                 Color="{AppThemeBinding Light=#C62828, Dark=#EF5350}" />
                             </Button.ImageSource>
                         </Button>
                     </Grid>
@@ -85,9 +90,9 @@
             </Grid>
         </DataTemplate>
     </ContentPage.Resources>
-    
-    
-    
+
+
+
     <!-- estrutura principal da página -->
 
     <Grid RowDefinitions="Auto,*">

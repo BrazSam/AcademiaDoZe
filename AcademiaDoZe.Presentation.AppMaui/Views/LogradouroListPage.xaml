@@ -55,8 +55,20 @@
                                         </Label>
                                         <Label Grid.Row="4" Grid.Column="0" Text="{Binding Pais}" Margin="0,0,0,5"/>
                                         <!-- Botões de Ação -->
-                                        <Button Grid.Row="0" Grid.Column="1" Text="Editar" Style="{StaticResource ButtonSmall}" Margin="4,0" MinimumWidthRequest="70" Clicked="OnEditButtonClicked" />
-                                        <Button Grid.Row="0" Grid.Column="2" Text="Excluir" Style="{StaticResource ButtonDanger}" Margin="4,0" MinimumWidthRequest="70" Clicked="OnDeleteButtonClicked" />
+                                        <Button Grid.Row="0" Grid.Column="1" Text="" Style="{StaticResource ButtonCardAction}" Margin="2,0"
+                                Clicked="OnEditButtonClicked" ToolTipProperties.Text="Editar" SemanticProperties.Description="Editar">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe3c9;" Size="22"
+                                                 Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                                            </Button.ImageSource>
+                                        </Button>
+                                        <Button Grid.Row="0" Grid.Column="2" Text="" Style="{StaticResource ButtonCardAction}" Margin="2,0"
+                                Clicked="OnDeleteButtonClicked" ToolTipProperties.Text="Excluir" SemanticProperties.Description="Excluir">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe872;" Size="22"
+                                                 Color="{AppThemeBinding Light=#C62828, Dark=#EF5350}" />
+                                            </Button.ImageSource>
+                                        </Button>
                                     </Grid>
                                 </Border>
                             </Grid>
