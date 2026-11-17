@@ -15,9 +15,11 @@
                 <!-- Entry de busca -->
                 <Entry Grid.Column="2" Text="{Binding SearchText}" Placeholder="Digite o valor..." HeightRequest="40" VerticalOptions="Center" Margin="0,0,0,0"/>
                 <!-- Botão de busca -->
-                <Button Grid.Column="4" Text="Buscar" Style="{StaticResource ButtonPrimary}" FontSize="14" WidthRequest="120" HeightRequest="40" Margin="0,0,0,0" Command="{Binding SearchLogradourosCommand}">
+                <Button Grid.Column="4" Text="" Style="{StaticResource ButtonIcon}" VerticalOptions="Center"
+                        SemanticProperties.Description="Buscar logradouros" ToolTipProperties.Text="Buscar logradouros"
+                        Command="{Binding SearchLogradourosCommand}">
                     <Button.ImageSource>
-                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" Size="24" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
                     </Button.ImageSource>
                 </Button>
             </Grid>
@@ -63,11 +65,12 @@
                 </CollectionView>
             </RefreshView>
             <!-- Floating Action Button -->
-            <Button Text="+" Command="{Binding AddLogradouroCommand}" Style="{StaticResource ButtonPrimary}"
- WidthRequest="56" HeightRequest="56" HorizontalOptions="End" VerticalOptions="End" Margin="20,20,20,20">
-                <Button.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Offset="0,4" Radius="8" Opacity="0.3"/>
-                </Button.Shadow>
+            <Button Text="" Command="{Binding AddLogradouroCommand}" Style="{StaticResource ButtonIconFloating}"
+                    HorizontalOptions="End" VerticalOptions="End" Margin="20"
+                    SemanticProperties.Description="Adicionar logradouro" ToolTipProperties.Text="Adicionar logradouro">
+                <Button.ImageSource>
+                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe145;" Size="26" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                </Button.ImageSource>
             </Button>
         </Grid>
         

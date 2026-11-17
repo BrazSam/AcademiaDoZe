@@ -96,9 +96,11 @@
             <Grid ColumnDefinitions="Auto,10,*,10,Auto" VerticalOptions="Center">
                 <Picker Grid.Column="0" Title="" ItemsSource="{Binding FilterTypes}" SelectedItem="{Binding SelectedFilterType}" WidthRequest="110" HorizontalOptions="Start" HeightRequest="40" VerticalOptions="Center"/>
                 <Entry Grid.Column="2" Text="{Binding SearchText}" TextChanged="OnSearchDebounceTextChanged" Placeholder="Digite o valor..." HeightRequest="40" VerticalOptions="Center" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchColaboradoresCommand}" />
-                <Button Grid.Column="4" Text="" Style="{StaticResource ButtonPrimary}" FontSize="14" WidthRequest="80" HeightRequest="40" Command="{Binding SearchColaboradoresCommand}">
+                <Button Grid.Column="4" Text="" Style="{StaticResource ButtonIcon}" VerticalOptions="Center"
+                        SemanticProperties.Description="Buscar colaboradores" ToolTipProperties.Text="Buscar colaboradores"
+                        Command="{Binding SearchColaboradoresCommand}">
                     <Button.ImageSource>
-                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" Size="24" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
                     </Button.ImageSource>
                 </Button>
             </Grid>
@@ -138,12 +140,11 @@
                 </CollectionView>
             </RefreshView>
             <!-- FAB -->
-            <Button Text="" Command="{Binding AddColaboradorCommand}" Style="{StaticResource ButtonPrimary}" WidthRequest="56" HeightRequest="56" HorizontalOptions="End" VerticalOptions="End" Margin="20">
-                <Button.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Offset="0,4" Radius="8" Opacity="0.3"/>
-                </Button.Shadow>
+            <Button Text="" Command="{Binding AddColaboradorCommand}" Style="{StaticResource ButtonIconFloating}"
+                    HorizontalOptions="End" VerticalOptions="End" Margin="20"
+                    SemanticProperties.Description="Adicionar colaborador" ToolTipProperties.Text="Adicionar colaborador">
                 <Button.ImageSource>
-                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe145;" />
+                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe145;" Size="26" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
                 </Button.ImageSource>
             </Button>
         </Grid>
