@@ -14,6 +14,8 @@ public static class ApplicationDependencyInjection
         services.AddTransient<IColaboradorService, ColaboradorService>();
         services.AddTransient<IAlunoService, AlunoService>();
         services.AddTransient<IMatriculaService, MatriculaService>();
+        services.AddTransient<IAcessoAlunoService, AcessoAlunoService>();
+        services.AddTransient<IAcessoColaboradorService, AcessoColaboradorService>();
         /*services.AddTransient<IAcessoAlunoService, AcessoAlunoService>();
         services.AddTransient<IAcessoColaboradorService, AcessoColaboradorService>();*/
         // AddScoped: cria uma instância do serviço por requisição HTTP.

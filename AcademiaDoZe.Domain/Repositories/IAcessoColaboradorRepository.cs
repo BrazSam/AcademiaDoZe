@@ -1,7 +1,7 @@
 ﻿using AcademiaDoZe.Domain.Entities; //Samuel Braz dos Santos
 namespace AcademiaDoZe.Domain.Repositories;
 
-public interface IAcessoColaboradorRepository : IRepository<AcessoColaborador>
+public interface IAcessoColaboradorRepository : IRepository<AcessoColaborador>, IDisposable
 {
     Task<IEnumerable<AcessoColaborador>> ObterAcessosPorColaboradorPeriodo(int? colaboradorId = null, DateOnly? inicio = null, DateOnly? fim = null, CancellationToken cancellationToken = default); 
     Task<AcessoColaborador?> ObterUltimoAcesso(int colaboradorId, CancellationToken cancellationToken = default);
