@@ -150,6 +150,11 @@ public partial class AlunoViewModel : BaseViewModel
             await Shell.Current.DisplayAlertAsync("Validação", "O CPF deve conter exatamente 11 dígitos numéricos.", "OK");
             return;
         }
+        if (AcademiaDoZe.Domain.ValueObjects.Cpf.Criar(apenasDigitos).IsFailure)
+        {
+            await Shell.Current.DisplayAlertAsync("Validação", "CPF inválido. Confira os dígitos verificadores.", "OK");
+            return;
+        }
         try
         {
             IsBusy = true;
@@ -389,6 +394,10 @@ public partial class AlunoViewModel : BaseViewModel
             if (apenasDigitosCpf.Length != 11)
             {
                 errors.Add("• CPF deve conter exatamente 11 dígitos numéricos.");
+            }
+            else if (AcademiaDoZe.Domain.ValueObjects.Cpf.Criar(apenasDigitosCpf).IsFailure)
+            {
+                errors.Add("• CPF inválido. Confira os dígitos verificadores; apenas ter 11 dígitos não é suficiente.");
             }
         }
         if (aluno.DataNascimento == default)
